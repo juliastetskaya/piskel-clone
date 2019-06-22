@@ -1,0 +1,30 @@
+{
+  "name": "piskel-clone",
+  "version": "0.0.1",
+  "description": "Pixel drawing and animation application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolling-scopes-school/juliastetskaya-2019Q1.git"
+  },
+  "keywords": [
+    "piskel",
+    "drwaing",
+    "pixel"
+  ],
+  "author": "Julia Stetskaya <juliastetskaya@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolling-scopes-school/juliastetskaya-2019Q1/issues"
+  },
+  "homepage": "https://github.com/rolling-scopes-school/juliastetskaya-2019Q1#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
+  }
+}
