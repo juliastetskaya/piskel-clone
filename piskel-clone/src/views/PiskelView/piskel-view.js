@@ -10,7 +10,7 @@ export default class PiskelView {
     const logo = createElement('img', 'logo');
     logo.setAttribute('src', image);
 
-    const logoLink = createElement('a', 'logo-link', logo);
+    const logoLink = createElement('a', 'logo__link', logo);
     logoLink.setAttribute('href', '/');
 
     const piskelName = createElement('span', 'piskel-name', this.name);
@@ -27,9 +27,9 @@ export default class PiskelView {
     const header = createElement('header', 'main-header', logoLink, piskelName, navigation);
 
 
-    const main = createElement('main');
+    const main = createElement('main', 'main');
 
-    const wrapper = createElement('div', 'main-wrapper');
+    const wrapper = createElement('div', 'main__wrapper');
 
     wrapper.append(header, main);
 

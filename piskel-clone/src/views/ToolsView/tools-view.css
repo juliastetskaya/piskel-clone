@@ -1,0 +1,175 @@
+.tools {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.tools__wrapper {
+  margin: auto 0;
+}
+
+.pen-size__item {
+  display: block;
+  height: 20px;
+  width: 20px;
+
+  margin-right: 2px;
+  border: 2px solid #444444;
+
+  cursor: pointer;
+  position: relative;
+}
+
+.pen-size__item:hover {
+  border-color: #888888;
+}
+
+.pen-size__item::before {
+  content: '';
+  background-color: white;
+  display: block;
+
+  position: absolute;
+}
+
+.pen-size-1::before {
+  width: 6px;
+  height: 6px;
+
+  left: 5px;
+  top: 5px;
+}
+
+.pen-size-2::before {
+  width: 8px;
+  height: 8px;
+
+  left: 4px;
+  top: 4px;
+}
+
+.pen-size-3::before {
+  width: 10px;
+  height: 10px;
+
+  left: 3px;
+  top: 3px;
+}
+
+.pen-size-4::before {
+  width: 12px;
+  height: 12px;
+
+  left: 2px;
+  top: 2px;
+}
+
+.pen-size__list,
+.tools__list {
+  display: flex;
+
+  margin: 0;
+  padding: 5px;
+  list-style: none;
+}
+
+.tools__item {
+  display: block;
+  height: 46px;
+  width: 46px;
+
+  background-color: #444444;
+
+  margin: 1px;
+  cursor: pointer;
+  position: relative;
+
+  background-image: url('../../images/icons.png');
+  background-size: 320px 274px;
+  background-repeat: no-repeat;
+}
+
+.tools__tip {
+  position: relative;
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.1;
+
+  background-color: #000000;
+
+  display: none;
+  position: absolute;
+
+  left: 55px;
+  top: 10px;
+  z-index: 2;
+
+  padding: 7px;
+  white-space: nowrap;
+  border-radius: 3px;
+}
+
+.tools__item:hover {
+  background-color: #555555;
+}
+
+.tools__item:hover > .tools__tip {
+  display: inline-block;
+}
+
+.tools__list {
+  padding: 0;
+
+  flex-wrap: wrap;
+  width: 100px;
+}
+
+.tools__shortcut {
+  color: #FFD705;
+}
+
+.tools__tip::before {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6.5px 7px 6.5px 0;
+  border-color: transparent #000000 transparent transparent;
+
+  top: 7px;
+  left: -5px;
+}
+
+.color-picker {
+  background-position:  100% 0%;
+}
+
+.pen-tool {
+  background-position: -182px -92px;
+}
+
+.paint-bucket-tool {
+  background-position: -228px -92px;
+}
+
+.eraser-tool {
+  background-position: -46px -228px;
+}
+
+.stroke-tool {
+  background-position: -46px -136px;
+}
+
+.rectangle-tool {
+  background-position: -182px 0px;
+}
+
+.circle-tool {
+  background-position: -228px -46px;
+}
+
+.move-tool {
+  background-position: -184px -228px;
+}
