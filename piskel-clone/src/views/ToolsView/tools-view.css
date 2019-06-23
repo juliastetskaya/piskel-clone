@@ -1,7 +1,7 @@
 .tools {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 80vh;
 }
 
 .tools__wrapper {
@@ -89,8 +89,9 @@
   background-repeat: no-repeat;
 }
 
-.tools__tip {
-  position: relative;
+.tools__tip,
+.color__tip,
+.swap-colors__tip {
   color: #ffffff;
   font-size: 11px;
   line-height: 1.1;
@@ -113,7 +114,9 @@
   background-color: #555555;
 }
 
-.tools__item:hover > .tools__tip {
+.tools__item:hover > .tools__tip,
+.palette__item:hover > .color__tip,
+.swap-colors:hover > .swap-colors__tip {
   display: inline-block;
 }
 
@@ -124,11 +127,14 @@
   width: 100px;
 }
 
-.tools__shortcut {
+.tools__shortcut,
+.swap-colors__shortcut {
   color: #FFD705;
 }
 
-.tools__tip::before {
+.tools__tip::before,
+.color__tip::before,
+.swap-colors__tip::before {
   content: '';
   position: absolute;
 
@@ -172,4 +178,98 @@
 
 .move-tool {
   background-position: -184px -228px;
+}
+
+.first-color,
+.second-color {
+  height: 46px;
+  width: 46px;
+
+  margin: 1px;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  background: transparent;
+  outline: none;
+  overflow: hidden;
+  border: none;
+
+  padding: 0;
+  cursor: pointer;
+
+  height: 38px;
+  width: 38px;
+  margin: auto;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
+}
+
+.input__wrapper {
+  background-color: #444444;
+
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+}
+
+.input__wrapper:hover {
+  background-color: #888888;
+}
+
+.palette {
+  margin-top: 10px;
+  margin-left: 10px;
+
+  position: relative;
+  display: flex;
+}
+
+.first-color {
+  z-index: 4;
+}
+
+.second-color {
+  margin-top: 25px;
+  margin-left: -20px;
+
+  z-index: 3;
+}
+
+.swap-colors {
+  width: 18px;
+  height: 18px;
+
+  background-image: url('../../images/icons.png');
+  background-repeat: no-repeat;
+  background-size: 320px 274px;
+  background-position: -274px -222px;
+
+  cursor: pointer;
+
+  margin-left: -70px;
+  margin-top: 50px;
+
+  opacity: 0.3;
+  position: relative;
+}
+
+.swap-colors:hover {
+  opacity: 1;
+}
+
+.palette__item {
+  position: relative;
+}
+
+.swap-colors__tip {
+  left: 27px;
+  top: -4px;
+  z-index: 5;
 }
