@@ -27,9 +27,13 @@ body {
   user-select: none;
 }
 
+.main {
+  display: flex;
+}
+
 
 .main-header {
-  height: 37px;
+  height: 36px;
   background-color: #2d2d2d;
 
   padding: 6px 6px 0 15px;
@@ -53,7 +57,7 @@ body {
   display: flex;
 }
 
-.button {
+.button__nav {
   display: block;
   padding: 6px 10px;
   height: 24px;

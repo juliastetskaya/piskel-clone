@@ -17,10 +17,10 @@ export default class PiskelView {
   }
 
   createNavigation() {
-    const buttonCreate = createElement('a', 'button button_create-sprite', 'Create Sprite');
+    const buttonCreate = createElement('a', 'button__nav button_create-sprite', 'Create Sprite');
     buttonCreate.setAttribute('href', '#');
 
-    const buttonSignIn = createElement('a', 'button button_sign-in', 'Sign in');
+    const buttonSignIn = createElement('a', 'button__nav button_sign-in', 'Sign in');
     buttonSignIn.setAttribute('href', '#');
 
     return createElement('nav', 'main-nav', buttonCreate, buttonSignIn);
