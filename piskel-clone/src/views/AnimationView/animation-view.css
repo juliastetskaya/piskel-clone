@@ -1,0 +1,27 @@
+.animation {
+  margin-right: 57px;
+}
+
+.animation__wrapper {
+  height: 200px;
+}
+
+.animation__field {
+  background: url('../../images/bg.png') repeat;
+}
+
+.speed__wrapper {
+  background-color: #333333;
+
+  display: flex;
+}
+
+.speed__fps {
+  color: #aaa;
+  font-size: 12px;
+  min-width: 55px;
+  line-height: 26px;
+
+  display: block;
+  padding: 0 10px;
+}
