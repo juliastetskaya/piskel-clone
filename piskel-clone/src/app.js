@@ -1,17 +1,11 @@
-import PiskelModel from './models/PiskelModel';
+import PiskelController from './controllers/PiskelController';
 import ToolsController from './controllers/ToolsController';
-import FramesModel from './models/FramesModel';
-import CanvasModel from './models/CanvasModel';
-import AnimationModel from './models/AnimationModel';
+import CanvasController from './controllers/CanvasController';
 
-const piskel = new PiskelModel();
+const piskel = new PiskelController();
 const tools = new ToolsController();
-const frames = new FramesModel();
-const canvas = new CanvasModel();
-const animation = new AnimationModel();
+const canvas = new CanvasController();
 
 piskel.start();
 tools.start();
-frames.start();
 canvas.start();
-animation.start();

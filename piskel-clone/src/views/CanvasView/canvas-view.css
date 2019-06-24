@@ -18,3 +18,35 @@
   background: url('../../images/bg.png') repeat;
   margin: auto;
 }
+
+.cursor-pen {
+  cursor: url('../../images/cursors/pen.png'), default;
+}
+
+.cursor-bucket {
+  cursor: url('../../images/cursors/paint-bucket.png'), default;
+}
+
+.cursor-eraser {
+  cursor: url('../../images/cursors/eraser.png'), default;
+}
+
+.cursor-stroke {
+  cursor: url('../../images/cursors/stroke.png'), default;
+}
+
+.cursor-rectangle {
+  cursor: url('../../images/cursors/rectangle.png'), default;
+}
+
+.cursor-circle {
+  cursor: url('../../images/cursors/circle.png'), default;
+}
+
+.cursor-move {
+  cursor: url('../../images/cursors/hand.png'), default;
+}
+
+.cursor-picker {
+  cursor: url('../../images/cursors/dropper.png'), default;
+}

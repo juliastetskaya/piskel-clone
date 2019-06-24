@@ -1,4 +1,4 @@
-import Model from '../models/ToolsModel';
+import Model from '../models/Model';
 
 export default class ToolsController {
   start() {

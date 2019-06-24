@@ -1,13 +1,26 @@
 import ToolsView from '../views/ToolsView';
+import CanvasView from '../views/CanvasView';
+import PiskelView from '../views/PiskelView';
+import FramesView from '../views/FramesView';
+import AnimationView from '../views/AnimationView';
 
-export default class ToolsModel {
+export default class Model {
   constructor() {
     this.currentTool = '';
   }
 
   start() {
-    const toolsView = new ToolsView();
-    toolsView.render();
+    const tools = new ToolsView();
+    const canvas = new CanvasView();
+    const piskel = new PiskelView('New Piskel');
+    const frames = new FramesView();
+    const animation = new AnimationView();
+
+    piskel.render();
+    tools.render();
+    frames.render();
+    canvas.render();
+    animation.render();
   }
 
   clickToolsHandler({ target }) {
@@ -25,6 +38,7 @@ export default class ToolsModel {
     if (target.tagName === 'LI') {
       [this.currentTool] = Object.keys(tools).filter(key => tools[key] === target);
       ToolsView.addClassActive(target);
+      CanvasView.addClassCursor(this.currentTool);
     }
   }
 }

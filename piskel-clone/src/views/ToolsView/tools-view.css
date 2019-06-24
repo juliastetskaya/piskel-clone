@@ -281,4 +281,5 @@ input[type="color"]::-webkit-color-swatch {
   width: 100%;
   border: 3px solid #FFD705;
   box-sizing: border-box;
+  cursor: default;
 }
