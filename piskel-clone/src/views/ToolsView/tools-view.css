@@ -273,3 +273,12 @@ input[type="color"]::-webkit-color-swatch {
   top: -4px;
   z-index: 5;
 }
+
+.active--tool::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border: 3px solid #FFD705;
+  box-sizing: border-box;
+}

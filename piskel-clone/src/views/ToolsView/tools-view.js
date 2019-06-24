@@ -7,6 +7,13 @@ export default class ToolsView {
     this.shortcuts = ['P', 'B', 'E', 'L', 'R', 'C', 'M', 'O'];
   }
 
+  static addClassActive(element) {
+    const activeTool = document.querySelector('.active--tool');
+    if (activeTool) activeTool.classList.remove('active--tool');
+
+    element.classList.add('active--tool');
+  }
+
   createPenSizeList() {
     const penSizes = this.penSizes.map(item => createElement('li', `pen-size__item pen-size-${item}`));
     return createElement('ul', 'pen-size__list', ...penSizes);
