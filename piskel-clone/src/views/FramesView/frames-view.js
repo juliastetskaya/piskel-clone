@@ -31,10 +31,20 @@ export default class FramesView {
     return createElement('li', 'frames__item frame--active', frameCanvas, ...buttons);
   }
 
+  createButtonNewFrame() {
+    const buttonNewFrame = createElement('button', 'frames__button', 'Add new frame');
+    buttonNewFrame.setAttribute('type', 'button');
+
+    const buttonIcon = createElement('div', 'button__icon');
+    return createElement('div', 'button__wrapper', buttonNewFrame, buttonIcon);
+  }
+
   render() {
     const frame = this.createFrame();
     const framesList = createElement('ul', 'frames__list', frame);
-    const section = createElement('section', 'frames', framesList);
+    const buttonNewFrame = this.createButtonNewFrame();
+
+    const section = createElement('section', 'frames', framesList, buttonNewFrame);
 
     document.querySelector('.main').append(section);
   }
