@@ -1,11 +1,22 @@
-import PiskelController from './controllers/PiskelController';
-import ToolsController from './controllers/ToolsController';
-import CanvasController from './controllers/CanvasController';
+import ToolsView from './views/ToolsView';
+import CanvasView from './views/CanvasView';
+import PiskelView from './views/PiskelView';
+import FramesView from './views/FramesView';
+import AnimationView from './views/AnimationView';
+import App from './main';
 
-const piskel = new PiskelController();
-const tools = new ToolsController();
-const canvas = new CanvasController();
+const toolsView = new ToolsView();
+const canvasView = new CanvasView();
+const piskelView = new PiskelView('New Piskel');
+const framesView = new FramesView();
+const animationView = new AnimationView();
+const app = new App();
+console.log(app.pixelWidth);
 
-piskel.start();
-tools.start();
-canvas.start();
+piskelView.render();
+toolsView.render();
+framesView.render();
+canvasView.render();
+animationView.render();
+app.start();
+console.log(app.pixelWidth);
