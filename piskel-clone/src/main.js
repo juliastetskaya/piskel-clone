@@ -153,7 +153,13 @@ export default class App {
     };
 
     const mouseMoveHandler = (event) => {
-      if (!isMouseDown) return;
+      if (!isMouseDown) {
+        const [x, y] = [event.offsetX, event.offsetY];
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)');
+        return;
+      }
 
       [x2, y2] = [event.offsetX, event.offsetY];
 
@@ -168,6 +174,10 @@ export default class App {
     };
 
     const mouseLeaveHandler = () => {
+      if (!isMouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
       isMouseDown = false;
       this.ctx.beginPath();
 
@@ -238,7 +248,13 @@ export default class App {
     };
 
     const mouseMoveHandler = (event) => {
-      if (!isMouseDown) return;
+      if (!isMouseDown) {
+        const [x, y] = [event.offsetX, event.offsetY];
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)');
+        return;
+      }
 
       [x2, y2] = [event.offsetX, event.offsetY];
 
@@ -256,6 +272,10 @@ export default class App {
     };
 
     const mouseLeaveHandler = () => {
+      if (!isMouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
       isMouseDown = false;
       this.ctx.beginPath();
 
@@ -318,7 +338,13 @@ export default class App {
     };
 
     const mouseMoveHandler = (event) => {
-      if (!isMouseDown) return;
+      if (!isMouseDown) {
+        const [x, y] = [event.offsetX, event.offsetY];
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)');
+        return;
+      }
 
       [x2, y2] = [event.offsetX, event.offsetY];
 
@@ -334,6 +360,10 @@ export default class App {
     };
 
     const mouseLeaveHandler = () => {
+      if (!isMouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
       isMouseDown = false;
       this.ctx.beginPath();
 
