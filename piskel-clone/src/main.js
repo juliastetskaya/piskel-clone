@@ -48,9 +48,29 @@ export default class App {
     });
   }
 
+  setColors() {
+    const inputFC = document.querySelector('.first-color__input');
+    const inputSC = document.querySelector('.second-color__input');
+    const swap = document.querySelector('.swap-colors');
+
+    inputFC.addEventListener('input', ({ target }) => {
+      this.firstColor = target.value;
+    });
+
+    inputSC.addEventListener('input', ({ target }) => {
+      this.secondColor = target.value;
+    });
+
+    swap.addEventListener('click', () => {
+      [this.firstColor, this.secondColor] = [this.secondColor, this.firstColor];
+      [inputFC.value, inputSC.value] = [inputSC.value, inputFC.value];
+    });
+  }
+
   start() {
     this.setTool();
     this.setPixelWidth();
+    this.setColors();
     this.draw();
   }
 
