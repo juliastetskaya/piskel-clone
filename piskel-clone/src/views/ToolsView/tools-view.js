@@ -23,7 +23,8 @@ export default class ToolsView {
     const tools = this.tools.map((item, index) => {
       const shortcut = createElement('span', 'tools__shortcut', `(${this.shortcuts[index]})`);
       const toolTip = createElement('div', 'tools__tip', `${item} `, shortcut);
-      return createElement('li', `tools__item ${item.toLowerCase().split(' ').join('-')}`, toolTip);
+      const classList = `tools__item ${item.toLowerCase().split(' ').join('-')}${!index ? ' active--tool' : ''}`;
+      return createElement('li', `${classList}`, toolTip);
     });
 
     return createElement('ul', 'tools__list', ...tools);

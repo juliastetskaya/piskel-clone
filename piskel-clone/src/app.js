@@ -10,13 +10,12 @@ const canvasView = new CanvasView();
 const piskelView = new PiskelView('New Piskel');
 const framesView = new FramesView();
 const animationView = new AnimationView();
-const app = new App();
-console.log(app.pixelWidth);
 
 piskelView.render();
 toolsView.render();
 framesView.render();
 canvasView.render();
 animationView.render();
+
+const app = new App();
 app.start();
-console.log(app.pixelWidth);
