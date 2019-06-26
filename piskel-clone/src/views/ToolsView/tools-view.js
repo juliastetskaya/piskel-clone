@@ -7,16 +7,30 @@ export default class ToolsView {
     this.shortcuts = ['P', 'B', 'E', 'L', 'R', 'C', 'M', 'O'];
   }
 
-  static addClassActive(element) {
+  static addClassActiveTool(element) {
     const activeTool = document.querySelector('.active--tool');
     if (activeTool) activeTool.classList.remove('active--tool');
 
     element.classList.add('active--tool');
   }
 
+  static addClassActiveSize(element) {
+    const activeSize = document.querySelector('.active--size');
+    if (activeSize) activeSize.classList.remove('active--size');
+
+    element.classList.add('active--size');
+  }
+
   createPenSizeList() {
-    const penSizes = this.penSizes.map(item => createElement('li', `pen-size__item pen-size-${item}`));
-    return createElement('ul', 'pen-size__list', ...penSizes);
+    const penSizes = this.penSizes.map((item, index) => {
+      const classList = `pen-size__item${index === 0 ? ' active--size' : ''}`;
+      const element = createElement('li', classList);
+      element.setAttribute('data-size', item);
+
+      return element;
+    });
+    const penSizeTip = createElement('div', 'pen-size__tip', 'Pen size from 1 to 4 pixels');
+    return createElement('ul', 'pen-size__list', ...penSizes, penSizeTip);
   }
 
   createToolsList() {
@@ -24,7 +38,7 @@ export default class ToolsView {
       const shortcut = createElement('span', 'tools__shortcut', `(${this.shortcuts[index]})`);
       const toolTip = createElement('div', 'tools__tip', `${item} `, shortcut);
       const classList = `tools__item ${item.toLowerCase().split(' ').join('-')}${!index ? ' active--tool' : ''}`;
-      return createElement('li', `${classList}`, toolTip);
+      return createElement('li', classList, toolTip);
     });
 
     return createElement('ul', 'tools__list', ...tools);

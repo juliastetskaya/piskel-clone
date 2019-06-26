@@ -9,8 +9,8 @@ export default class CanvasView {
 
   render() {
     const canvas = createElement('canvas', 'canvas__main');
-    canvas.width = 512;
-    canvas.height = 512;
+    canvas.width = 640;
+    canvas.height = 640;
 
     const wrapper = createElement('div', 'canvas__wrapper cursor-pen', canvas);
     const section = createElement('section', 'canvas', wrapper);

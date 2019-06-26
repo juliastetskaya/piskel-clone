@@ -32,7 +32,7 @@
   position: absolute;
 }
 
-.pen-size-1::before {
+.pen-size__item[data-size='1']::before {
   width: 6px;
   height: 6px;
 
@@ -40,7 +40,7 @@
   top: 5px;
 }
 
-.pen-size-2::before {
+.pen-size__item[data-size='2']::before {
   width: 8px;
   height: 8px;
 
@@ -48,7 +48,7 @@
   top: 4px;
 }
 
-.pen-size-3::before {
+.pen-size__item[data-size='3']::before {
   width: 10px;
   height: 10px;
 
@@ -56,7 +56,7 @@
   top: 3px;
 }
 
-.pen-size-4::before {
+.pen-size__item[data-size='4']::before {
   width: 12px;
   height: 12px;
 
@@ -71,6 +71,10 @@
   margin: 0;
   padding: 5px;
   list-style: none;
+}
+
+.pen-size__list {
+  position: relative;
 }
 
 .tools__item {
@@ -91,7 +95,8 @@
 
 .tools__tip,
 .color__tip,
-.swap-colors__tip {
+.swap-colors__tip,
+.pen-size__tip {
   color: #ffffff;
   font-size: 11px;
   line-height: 1.1;
@@ -110,13 +115,30 @@
   border-radius: 3px;
 }
 
+.swap-colors__tip {
+  left: 27px;
+  top: -4px;
+  z-index: 5;
+}
+
+.pen-size__tip {
+  left: 0;
+  top: -50px;
+
+  width: 100px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.5;
+}
+
 .tools__item:hover {
   background-color: #555555;
 }
 
 .tools__item:hover > .tools__tip,
 .palette__item:hover > .color__tip,
-.swap-colors:hover > .swap-colors__tip {
+.swap-colors:hover > .swap-colors__tip,
+.pen-size__list:hover > .pen-size__tip {
   display: inline-block;
 }
 
@@ -146,6 +168,20 @@
 
   top: 7px;
   left: -5px;
+}
+
+.pen-size__tip::before {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 6.5px 0 6.5px;
+  border-color: #000000 transparent transparent transparent;
+
+  top: 46px;
+  left: 43px;
 }
 
 .color-picker {
@@ -268,12 +304,6 @@ input[type="color"]::-webkit-color-swatch {
   position: relative;
 }
 
-.swap-colors__tip {
-  left: 27px;
-  top: -4px;
-  z-index: 5;
-}
-
 .active--tool::before {
   content: '';
   position: absolute;
@@ -282,4 +312,13 @@ input[type="color"]::-webkit-color-swatch {
   border: 3px solid #FFD705;
   box-sizing: border-box;
   cursor: default;
+}
+
+.active--size,
+.active--size:hover {
+  border-color: #FFD705;
+}
+
+.active--size::before {
+  background-color: #FFD705;
 }

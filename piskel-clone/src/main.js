@@ -3,11 +3,11 @@ import CanvasView from './views/CanvasView';
 
 export default class App {
   constructor() {
-    this.currentTool = 'pen';
-    this.pixelWidth = 20;
-    this.canvasSize = 32;
     this.canvas = document.querySelector('.canvas__main');
     this.ctx = this.canvas.getContext('2d');
+    this.currentTool = 'pen';
+    this.canvasSize = 128;
+    this.pixelWidth = 4;
     this.toolsList = document.querySelector('.tools__list');
     this.tools = {
       pen: document.querySelector('.pen-tool'),
@@ -39,20 +39,29 @@ export default class App {
     this.toolsList.addEventListener('click', this.clickToolsHandler.bind(this));
   }
 
+  setPixelWidth() {
+    const penSizeList = document.querySelector('.pen-size__list');
+    penSizeList.addEventListener('click', ({ target }) => {
+      if (target.tagName !== 'LI') return;
+      this.pixelWidth = (this.canvas.width / this.canvasSize) * Number(target.dataset.size);
+      ToolsView.addClassActiveSize(target);
+    });
+  }
+
   start() {
     this.setTool();
+    this.setPixelWidth();
     this.draw();
   }
 
   clickToolsHandler({ target }) {
-    if (target.tagName === 'LI') {
-      [this.currentTool] = Object.keys(this.tools).filter(key => this.tools[key] === target);
+    if (target.tagName !== 'LI') return;
+    [this.currentTool] = Object.keys(this.tools).filter(key => this.tools[key] === target);
 
-      ToolsView.addClassActive(target);
-      CanvasView.addClassCursor(this.currentTool);
+    ToolsView.addClassActiveTool(target);
+    CanvasView.addClassCursor(this.currentTool);
 
-      this.removeListners();
-    }
+    this.removeListners();
     this.handlers[this.currentTool]();
   }
 
