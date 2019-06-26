@@ -25,7 +25,7 @@ export default class App {
       eraser: () => console.log('eraser'),
       stroke: () => console.log('stroke'),
       rectangle: () => console.log('rectangle'),
-      circle: () => this.draw(),
+      circle: () => this.drawCircle(),
       move: () => console.log('move'),
       picker: () => console.log('picker'),
     };
@@ -104,6 +104,12 @@ export default class App {
     canvas.addEventListener('mouseup', () => console.log('mouseup'));
   }
 
+  drawPixel(x, y, color) {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
+      Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+  }
+
   draw() {
     let isMouseDown = false;
     let rightKey;
@@ -111,12 +117,6 @@ export default class App {
     let x2;
     let y1;
     let y2;
-
-    const drawPixel = (x, y, color) => {
-      this.ctx.fillStyle = color;
-      this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
-        Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
-    };
 
     const drawLine = (color) => {
       const deltaX = Math.abs(x2 - x1);
@@ -126,10 +126,10 @@ export default class App {
       const signY = y1 < y2 ? 1 : -1;
 
       let error = deltaX - deltaY;
-      drawPixel(x2, y2, color);
+      this.drawPixel(x2, y2, color);
 
       while (x1 !== x2 || y1 !== y2) {
-        drawPixel(x1, y1, color);
+        this.drawPixel(x1, y1, color);
         const error2 = error * 2;
 
         if (error2 > -deltaY) {
@@ -149,7 +149,7 @@ export default class App {
       rightKey = true;
 
       [x1, y1] = [event.offsetX, event.offsetY];
-      drawPixel(x1, y1, this.firstColor);
+      this.drawPixel(x1, y1, this.firstColor);
     };
 
     const mouseMoveHandler = (event) => {
@@ -177,7 +177,7 @@ export default class App {
     const contextMenuHandler = (event) => {
       event.preventDefault();
       rightKey = false;
-      drawPixel(x1, y1, this.secondColor);
+      this.drawPixel(x1, y1, this.secondColor);
     };
 
     this.addListners([
@@ -194,5 +194,81 @@ export default class App {
 
     ctx.drawImage(this.canvas, 0, 0, width, height, 0, 0, width, height);
     this.ctx.clearRect(0, 0, width, height);
+  }
+
+  drawCircle() {
+    let isMouseDown = false;
+    let rightKey;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+
+    const circle = (x, y, radius, color) => {
+      let x0 = 0;
+      let y0 = radius;
+      let gap = 0;
+      let delta = (1 - 2 * radius);
+
+      while (y0 >= 0) {
+        this.drawPixel(x + x0, y - y0, color);
+        this.drawPixel(x - x0, y - y0, color);
+        this.drawPixel(x - x0, y + y0, color);
+        this.drawPixel(x + x0, y + y0, color);
+        gap = 2 * (delta + y0) - 1;
+        if (delta < 0 && gap <= 0) {
+          x0 += 1;
+          delta += 2 * x0 + 1;
+        } else if (delta > 0 && gap > 0) {
+          y0 -= 1;
+          delta -= 2 * y0 + 1;
+        } else {
+          x0 += 1;
+          delta += 2 * (x0 - y0);
+          y0 -= 1;
+        }
+      }
+    };
+
+    const mouseDownHandler = (event) => {
+      isMouseDown = true;
+      rightKey = true;
+
+      [x1, y1] = [event.offsetX, event.offsetY];
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!isMouseDown) return;
+
+      [x2, y2] = [event.offsetX, event.offsetY];
+
+      const radius = Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2));
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      circle(x1, y1, radius, rightKey ? this.firstColor : this.secondColor);
+    };
+
+    const mouseUpHandler = () => {
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const mouseLeaveHandler = () => {
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+      rightKey = false;
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+    ]);
   }
 }
