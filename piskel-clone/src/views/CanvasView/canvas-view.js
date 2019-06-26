@@ -12,7 +12,14 @@ export default class CanvasView {
     canvas.width = 640;
     canvas.height = 640;
 
-    const wrapper = createElement('div', 'canvas__wrapper cursor-pen', canvas);
+    const canvasDrawing = createElement('canvas', 'canvas__drawing');
+    canvasDrawing.width = 640;
+    canvasDrawing.height = 640;
+
+    const background = createElement('div', 'canvas__background');
+
+    const container = createElement('div', 'canvas__container', background, canvas, canvasDrawing);
+    const wrapper = createElement('div', 'canvas__wrapper cursor-pen', container);
     const section = createElement('section', 'canvas', wrapper);
 
     document.querySelector('.main').append(section);

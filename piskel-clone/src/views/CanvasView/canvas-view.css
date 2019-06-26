@@ -14,9 +14,32 @@
   box-shadow: 1px 0 1px #999999;
 }
 
-.canvas__main {
-  background: url('../../images/bg.png') repeat;
+.canvas__container {
+  position: relative;
   margin: auto;
+}
+
+.canvas__background {
+  width: 640px;
+  height: 640px;
+  background: url('../../images/bg.png') repeat;
+}
+
+.canvas__main,
+.canvas__drawing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.canvas__main {
+  z-index: 4;
+}
+
+.canvas__drawing {
+  z-index: 5;
 }
 
 .cursor-pen {

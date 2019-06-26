@@ -3,7 +3,7 @@ import CanvasView from './views/CanvasView';
 
 export default class App {
   constructor() {
-    this.canvas = document.querySelector('.canvas__main');
+    this.canvas = document.querySelector('.canvas__drawing');
     this.ctx = this.canvas.getContext('2d');
     this.currentTool = 'pen';
     this.canvasSize = 128;
@@ -25,7 +25,7 @@ export default class App {
       eraser: () => console.log('eraser'),
       stroke: () => console.log('stroke'),
       rectangle: () => console.log('rectangle'),
-      circle: () => console.log('circle'),
+      circle: () => this.draw(),
       move: () => console.log('move'),
       picker: () => console.log('picker'),
     };
@@ -83,6 +83,13 @@ export default class App {
 
     this.removeListners();
     this.handlers[this.currentTool]();
+  }
+
+  addListners(handlers) {
+    this.events.forEach((event, index) => {
+      this.canvas.addEventListener(event, handlers[index]);
+      this.listners[event] = handlers[index];
+    });
   }
 
   removeListners() {
@@ -149,6 +156,7 @@ export default class App {
       if (!isMouseDown) return;
 
       [x2, y2] = [event.offsetX, event.offsetY];
+
       drawLine(rightKey ? this.firstColor : this.secondColor);
     };
 
@@ -156,12 +164,14 @@ export default class App {
       isMouseDown = false;
       this.ctx.beginPath();
 
-      // this.getFrame();
+      this.transferImage();
     };
 
     const mouseLeaveHandler = () => {
       isMouseDown = false;
       this.ctx.beginPath();
+
+      this.transferImage();
     };
 
     const contextMenuHandler = (event) => {
@@ -175,10 +185,14 @@ export default class App {
     ]);
   }
 
-  addListners(handlers) {
-    this.events.forEach((event, index) => {
-      this.canvas.addEventListener(event, handlers[index]);
-      this.listners[event] = handlers[index];
-    });
+  transferImage() {
+    const mainCanvas = document.querySelector('.canvas__main');
+    const ctx = mainCanvas.getContext('2d');
+
+    const { width } = this.canvas;
+    const { height } = this.canvas;
+
+    ctx.drawImage(this.canvas, 0, 0, width, height, 0, 0, width, height);
+    this.ctx.clearRect(0, 0, width, height);
   }
 }
