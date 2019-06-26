@@ -23,7 +23,7 @@ export default class App {
       pen: () => this.draw(),
       bucket: () => this.bucket(),
       eraser: () => console.log('eraser'),
-      stroke: () => console.log('stroke'),
+      stroke: () => this.drawStroke(),
       rectangle: () => console.log('rectangle'),
       circle: () => this.drawCircle(),
       move: () => console.log('move'),
@@ -118,7 +118,7 @@ export default class App {
     let y1;
     let y2;
 
-    const drawLine = (color) => {
+    const line = (color) => {
       const deltaX = Math.abs(x2 - x1);
       const deltaY = Math.abs(y2 - y1);
 
@@ -157,7 +157,7 @@ export default class App {
 
       [x2, y2] = [event.offsetX, event.offsetY];
 
-      drawLine(rightKey ? this.firstColor : this.secondColor);
+      line(rightKey ? this.firstColor : this.secondColor);
     };
 
     const mouseUpHandler = () => {
@@ -265,6 +265,85 @@ export default class App {
     const contextMenuHandler = (event) => {
       event.preventDefault();
       rightKey = false;
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+    ]);
+  }
+
+  drawStroke() {
+    let isMouseDown = false;
+    let rightKey;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+
+    const line = (coords, color) => {
+      let [startX, startY] = coords;
+      const [,, endX, endY] = coords;
+
+      const deltaX = Math.abs(endX - startX);
+      const deltaY = Math.abs(endY - startY);
+
+      const signX = startX < endX ? 1 : -1;
+      const signY = startY < endY ? 1 : -1;
+
+      let error = deltaX - deltaY;
+      this.drawPixel(endX, endY, color);
+
+      while (startX !== endX || startY !== endY) {
+        this.drawPixel(startX, startY, color);
+        const error2 = error;
+
+        if (error2 > -deltaY) {
+          error -= deltaY;
+          startX += signX;
+        }
+
+        if (error2 < deltaX) {
+          error += deltaX;
+          startY += signY;
+        }
+      }
+    };
+
+    const mouseDownHandler = (event) => {
+      isMouseDown = true;
+      rightKey = true;
+
+      [x1, y1] = [event.offsetX, event.offsetY];
+      this.drawPixel(x1, y1, this.firstColor);
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!isMouseDown) return;
+
+      [x2, y2] = [event.offsetX, event.offsetY];
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      line([x1, y1, x2, y2], rightKey ? this.firstColor : this.secondColor);
+    };
+
+    const mouseUpHandler = () => {
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const mouseLeaveHandler = () => {
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+      rightKey = false;
+      this.drawPixel(x1, y1, this.secondColor);
     };
 
     this.addListners([
