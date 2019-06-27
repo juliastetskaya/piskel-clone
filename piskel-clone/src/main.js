@@ -29,7 +29,7 @@ export default class App {
       rectangle: () => this.drawRectangle(),
       circle: () => this.drawCircle(),
       move: () => this.move(),
-      picker: () => console.log('picker'),
+      picker: () => this.colorPicker(),
     };
     this.listners = {};
     this.events = ['mousedown', 'contextmenu', 'mousemove', 'mouseup', 'mouseleave'];
@@ -40,6 +40,7 @@ export default class App {
   setTool() {
     this.toolsList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
+      this.canvas.style.display = '';
       [this.currentTool] = Object.keys(this.tools).filter(key => this.tools[key] === target);
 
       ToolsView.addClassActiveTool(target);
@@ -90,10 +91,214 @@ export default class App {
     this.listners = {};
   }
 
+  colorPicker() {
+    const rgbToHex = (arr) => {
+      const arrHex = arr.map((x) => {
+        const num = parseInt(x, 10).toString(16);
+        return (num.length === 1) ? `0${num}` : num;
+      });
+      return `#${arrHex.join('')}`;
+    };
+
+    const getColor = (event, right = true) => {
+      const arr = [];
+      const [x, y] = [event.offsetX, event.offsetY];
+      const { data } = this.context.getImageData(x, y, 1, 1);
+
+      for (let i = 0; i < data.length - 1; i += 1) {
+        arr.push(data[i]);
+      }
+      if (right) {
+        this.firstColor = rgbToHex(arr);
+        document.querySelector('.first-color__input').value = this.firstColor;
+      } else {
+        this.secondColor = rgbToHex(arr);
+        document.querySelector('.second-color__input').value = this.secondColor;
+      }
+    };
+
+    this.canvas.style.display = 'none';
+    const clickHandler = (event) => {
+      getColor(event);
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+      getColor(event, false);
+    };
+
+    this.mainCanvas.addEventListener('click', clickHandler);
+    this.mainCanvas.addEventListener('contextmenu', contextMenuHandler);
+  }
+
   bucket() {
-    this.mainCanvas.addEventListener('mousedown', () => console.log('mousedown'));
-    this.mainCanvas.addEventListener('mousemove', () => console.log('mousemove'));
-    this.mainCanvas.addEventListener('mouseup', () => console.log('mouseup'));
+    let rightKey;
+    let x1;
+    let y1;
+
+    // function hexToRgb(hex) {
+    //   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    //   return result ? {
+    //     r: parseInt(result[1], 16),
+    //     g: parseInt(result[2], 16),
+    //     b: parseInt(result[3], 16),
+    //   } : null;
+    // }
+
+    // const canvasWidth = this.mainCanvas.width;
+    // const canvasHeight = this.mainCanvas.height;
+
+    // const colorLayer = this.context.getImageData(0, 0, canvasWidth, canvasHeight);
+
+    const isMatchStartColor = (x, y, color) => {
+      console.log(x, y);
+      const { data } = this.context.getImageData(x, y, 1, 1);
+
+      return data[0] === color[0] && data[1] === color[1] && data[2] === color[2]
+        && data[3] === color[3];
+    };
+
+    // // const colorPixel = (pixelPos, { r: fillColorR, g: fillColorG, b: fillColorB }) => {
+    // //   console.log(fillColorR, fillColorG, fillColorB);
+    // //   colorLayer.data[pixelPos] = fillColorR;
+    // //   colorLayer.data[pixelPos + 1] = fillColorG;
+    // //   colorLayer.data[pixelPos + 2] = fillColorB;
+    // //   colorLayer.data[pixelPos + 3] = 255;
+    // // };
+
+    // const fill = (startX, startY, startColor, fillColor) => {
+    //   let pixelPos;
+    //   let reachLeft;
+    //   let reachRight;
+
+    //   const pixelStack = [[startX, startY]];
+
+    //   while (pixelStack.length) {
+    //     const newPos = pixelStack.pop();
+    //     const x = newPos / this.pixelWidth;
+    //     let y = newPos / this.pixelWidth;
+
+    //     pixelPos = y * canvasWidth + x;
+
+    //     while (y >= 0 && isMatchStartColor(pixelPos, startColor)) {
+    //       pixelPos -= canvasWidth;
+    //     }
+    //     pixelPos += canvasWidth;
+    //     y += 1;
+
+    //     reachLeft = false;
+    //     reachRight = false;
+
+    //     while (y <= canvasHeight && isMatchStartColor(pixelPos, startColor)) {
+    //       // const color = hexToRgb(fillColor);
+    //       // colorPixel(pixelPos, color);
+    //       this.drawPixel(x, y, fillColor);
+
+    //       if (x > 0) {
+    //         if (isMatchStartColor(pixelPos - 1, startColor)) {
+    //           if (!reachLeft) {
+    //             pixelStack.push([x - 1, y]);
+    //             reachLeft = true;
+    //           }
+    //         } else if (reachLeft) {
+    //           reachLeft = false;
+    //         }
+    //       }
+
+    //       if (x < canvasWidth - 1) {
+    //         if (isMatchStartColor(pixelPos + 1, startColor)) {
+    //           if (!reachRight) {
+    //             pixelStack.push([x + 1, y]);
+    //             reachRight = true;
+    //           }
+    //         } else if (reachRight) {
+    //           reachRight = false;
+    //         }
+    //       }
+
+    //       pixelPos += canvasWidth;
+    //     }
+    //   }
+
+    //   this.context.putImageData(colorLayer, 0, 0);
+    // };
+
+    const fill = (startX, startY, startColor, fillColor) => {
+      let reachLeft;
+      let reachRight;
+
+      const pixelStack = [[startX, startY]];
+
+      const canvasWidth = this.mainCanvas.width;
+      const canvasHeight = this.mainCanvas.height;
+
+      while (pixelStack.length) {
+        const newPos = pixelStack.pop();
+        const [x] = newPos;
+        let [, y] = newPos;
+
+
+        while (y >= 0 && isMatchStartColor(x, y, startColor)) {
+          y -= this.pixelWidth;
+        }
+
+        y += this.pixelWidth;
+
+        while (y < canvasHeight && isMatchStartColor(x, y, startColor)) {
+          this.drawPixel(x, y, fillColor);
+
+          if (x > 0) {
+            if (isMatchStartColor(x - this.pixelWidth, y, startColor)) {
+              if (!reachLeft) {
+                pixelStack.push([x - this.pixelWidth, y]);
+                reachLeft = true;
+              }
+            } else if (reachLeft) {
+              reachLeft = false;
+            }
+          }
+
+          if (x < canvasWidth) {
+            if (isMatchStartColor(x + this.pixelWidth, y, startColor)) {
+              if (!reachRight) {
+                pixelStack.push([x + this.pixelWidth, y]);
+                reachRight = true;
+              }
+            } else if (reachRight) {
+              reachRight = false;
+            }
+          }
+
+          y += this.pixelWidth;
+        }
+      }
+    };
+
+
+    const mouseDownHandler = (event) => {
+      rightKey = true;
+
+      [x1, y1] = [event.offsetX, event.offsetY];
+      const { data } = this.context.getImageData(x1, y1, 1, 1);
+      fill(x1, y1, data, rightKey ? this.firstColor : this.secondColor);
+    };
+
+    const mouseUpHandler = () => {
+      this.transferImage();
+    };
+
+    const mouseLeaveHandler = () => {
+      this.transferImage();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+      rightKey = false;
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseLeaveHandler,
+    ]);
   }
 
   drawPixel(x, y, color, mouseDown = true) {
