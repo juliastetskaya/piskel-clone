@@ -26,7 +26,7 @@ export default class App {
       bucket: () => this.bucket(),
       eraser: () => this.draw(),
       stroke: () => this.drawStroke(),
-      rectangle: () => console.log('rectangle'),
+      rectangle: () => this.drawRectangle(),
       circle: () => this.drawCircle(),
       move: () => this.move(),
       picker: () => console.log('picker'),
@@ -384,6 +384,68 @@ export default class App {
 
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       line([x1, y1, x2, y2], rightKey ? this.firstColor : this.secondColor);
+    };
+
+    const mouseUpHandler = () => {
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const mouseLeaveHandler = () => {
+      if (!isMouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      isMouseDown = false;
+      this.ctx.beginPath();
+
+      this.transferImage();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+      rightKey = false;
+      this.drawPixel(x1, y1, this.secondColor);
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+    ]);
+  }
+
+  drawRectangle() {
+    let isMouseDown = false;
+    let rightKey;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+
+    const mouseDownHandler = (event) => {
+      isMouseDown = true;
+      rightKey = true;
+
+      [x1, y1] = [event.offsetX, event.offsetY];
+      this.drawPixel(x1, y1, this.firstColor);
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!isMouseDown) {
+        const [x, y] = [event.offsetX, event.offsetY];
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)');
+        return;
+      }
+
+      [x2, y2] = [event.offsetX, event.offsetY];
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.strokeStyle = rightKey ? this.firstColor : this.secondColor;
+      this.ctx.lineWidth = this.pixelWidth;
+      this.ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
     };
 
     const mouseUpHandler = () => {
