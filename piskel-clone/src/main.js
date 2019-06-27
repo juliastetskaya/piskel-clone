@@ -4,7 +4,9 @@ import CanvasView from './views/CanvasView';
 export default class App {
   constructor() {
     this.canvas = document.querySelector('.canvas__drawing');
+    this.mainCanvas = document.querySelector('.canvas__main');
     this.ctx = this.canvas.getContext('2d');
+    this.context = this.mainCanvas.getContext('2d');
     this.currentTool = 'pen';
     this.canvasSize = 128;
     this.pixelWidth = 4;
@@ -22,7 +24,7 @@ export default class App {
     this.handlers = {
       pen: () => this.draw(),
       bucket: () => this.bucket(),
-      eraser: () => console.log('eraser'),
+      eraser: () => this.draw(),
       stroke: () => this.drawStroke(),
       rectangle: () => console.log('rectangle'),
       circle: () => this.drawCircle(),
@@ -36,7 +38,16 @@ export default class App {
   }
 
   setTool() {
-    this.toolsList.addEventListener('click', this.clickToolsHandler.bind(this));
+    this.toolsList.addEventListener('click', ({ target }) => {
+      if (target.tagName !== 'LI') return;
+      [this.currentTool] = Object.keys(this.tools).filter(key => this.tools[key] === target);
+
+      ToolsView.addClassActiveTool(target);
+      CanvasView.addClassCursor(this.currentTool);
+
+      this.removeListners();
+      this.handlers[this.currentTool]();
+    });
   }
 
   setPixelWidth() {
@@ -67,24 +78,6 @@ export default class App {
     });
   }
 
-  start() {
-    this.setTool();
-    this.setPixelWidth();
-    this.setColors();
-    this.draw();
-  }
-
-  clickToolsHandler({ target }) {
-    if (target.tagName !== 'LI') return;
-    [this.currentTool] = Object.keys(this.tools).filter(key => this.tools[key] === target);
-
-    ToolsView.addClassActiveTool(target);
-    CanvasView.addClassCursor(this.currentTool);
-
-    this.removeListners();
-    this.handlers[this.currentTool]();
-  }
-
   addListners(handlers) {
     this.events.forEach((event, index) => {
       this.canvas.addEventListener(event, handlers[index]);
@@ -98,16 +91,21 @@ export default class App {
   }
 
   bucket() {
-    const canvas = document.querySelector('.canvas__main');
-    canvas.addEventListener('mousedown', () => console.log('mousedown'));
-    canvas.addEventListener('mousemove', () => console.log('mousemove'));
-    canvas.addEventListener('mouseup', () => console.log('mouseup'));
+    this.mainCanvas.addEventListener('mousedown', () => console.log('mousedown'));
+    this.mainCanvas.addEventListener('mousemove', () => console.log('mousemove'));
+    this.mainCanvas.addEventListener('mouseup', () => console.log('mouseup'));
   }
 
-  drawPixel(x, y, color) {
+  drawPixel(x, y, color, mouseDown = true) {
     this.ctx.fillStyle = color;
-    this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
-      Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+    if (this.currentTool === 'eraser' && mouseDown) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.context.clearRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
+        Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+    } else {
+      this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
+        Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+    }
   }
 
   move() {
@@ -117,15 +115,13 @@ export default class App {
     let y1;
     let y2;
     let imageData;
-    const mainCanvas = document.querySelector('.canvas__main');
-    const ctx = mainCanvas.getContext('2d');
 
     const mouseDownHandler = (event) => {
       isMouseDown = true;
 
       [x1, y1] = [event.offsetX, event.offsetY];
 
-      imageData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+      imageData = this.context.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
     };
 
     const mouseMoveHandler = (event) => {
@@ -133,9 +129,9 @@ export default class App {
 
       [x2, y2] = [event.offsetX, event.offsetY];
 
-      ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+      this.context.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
 
-      ctx.putImageData(imageData, x2 - x1, y2 - y1);
+      this.context.putImageData(imageData, x2 - x1, y2 - y1);
     };
 
     const mouseUpHandler = () => {
@@ -198,7 +194,7 @@ export default class App {
         const [x, y] = [event.offsetX, event.offsetY];
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)');
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)', false);
         return;
       }
 
@@ -237,13 +233,10 @@ export default class App {
   }
 
   transferImage() {
-    const mainCanvas = document.querySelector('.canvas__main');
-    const ctx = mainCanvas.getContext('2d');
-
     const { width } = this.canvas;
     const { height } = this.canvas;
 
-    ctx.drawImage(this.canvas, 0, 0, width, height, 0, 0, width, height);
+    this.context.drawImage(this.canvas, 0, 0, width, height, 0, 0, width, height);
     this.ctx.clearRect(0, 0, width, height);
   }
 
@@ -420,5 +413,12 @@ export default class App {
     this.addListners([
       mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
     ]);
+  }
+
+  start() {
+    this.setTool();
+    this.setPixelWidth();
+    this.setColors();
+    this.draw();
   }
 }
