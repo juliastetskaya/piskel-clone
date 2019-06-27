@@ -26,7 +26,7 @@ export default class App {
       stroke: () => this.drawStroke(),
       rectangle: () => console.log('rectangle'),
       circle: () => this.drawCircle(),
-      move: () => console.log('move'),
+      move: () => this.move(),
       picker: () => console.log('picker'),
     };
     this.listners = {};
@@ -108,6 +108,47 @@ export default class App {
     this.ctx.fillStyle = color;
     this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
       Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
+  }
+
+  move() {
+    let isMouseDown = false;
+    let x1;
+    let x2;
+    let y1;
+    let y2;
+    let imageData;
+    const mainCanvas = document.querySelector('.canvas__main');
+    const ctx = mainCanvas.getContext('2d');
+
+    const mouseDownHandler = (event) => {
+      isMouseDown = true;
+
+      [x1, y1] = [event.offsetX, event.offsetY];
+
+      imageData = ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height);
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!isMouseDown) return;
+
+      [x2, y2] = [event.offsetX, event.offsetY];
+
+      ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+
+      ctx.putImageData(imageData, x2 - x1, y2 - y1);
+    };
+
+    const mouseUpHandler = () => {
+      isMouseDown = false;
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
+    ]);
   }
 
   draw() {
