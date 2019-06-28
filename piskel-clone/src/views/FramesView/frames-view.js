@@ -2,11 +2,16 @@ import createElement from '../../lib';
 
 export default class FramesView {
   updateFramesNumbers() {
-    const frames = [...document.querySelector('.frames__list').children];
+    const frameList = document.querySelector('.frames__list');
+    const frames = [...frameList.children];
     frames.forEach((frame, index) => {
       const number = frame.querySelector('.number');
       number.innerHTML = index + 1;
     });
+    const buttonDelete = frameList.firstChild.querySelector('.button__delete');
+    const buttonMove = frameList.firstChild.querySelector('.button__move');
+    buttonDelete.style.display = frames.length === 1 ? 'none' : '';
+    buttonMove.style.display = frames.length === 1 ? 'none' : '';
   }
 
   createFrameButtons() {
@@ -37,7 +42,17 @@ export default class FramesView {
     frameCanvas.width = 96;
     frameCanvas.height = 96;
 
-    return createElement('li', 'frames__item frame--active', frameCanvas, ...buttons);
+    const activeFrame = document.querySelector('.frame--active');
+    if (activeFrame) {
+      activeFrame.classList.remove('frame--active');
+    }
+
+    const frame = createElement('li', 'frames__item frame--active', frameCanvas, ...buttons);
+    document.querySelector('.frames__list').append(frame);
+
+    this.updateFramesNumbers();
+
+    return frame;
   }
 
   createButtonNewFrame() {
@@ -48,21 +63,13 @@ export default class FramesView {
     return createElement('div', 'button__wrapper', buttonNewFrame, buttonIcon);
   }
 
-  addNewFrame() {
-    const frame = this.createFrame();
-    document.querySelector('.frames__list').append(frame);
-    this.updateFramesNumbers();
-  }
-
   render() {
-    const frame = this.createFrame();
-    const framesList = createElement('ul', 'frames__list', frame);
+    const framesList = createElement('ul', 'frames__list');
     const buttonNewFrame = this.createButtonNewFrame();
 
     const section = createElement('section', 'frames', framesList, buttonNewFrame);
 
     document.querySelector('.main').append(section);
-
-    this.updateFramesNumbers();
+    this.createFrame();
   }
 }
