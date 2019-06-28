@@ -1,6 +1,14 @@
 import createElement from '../../lib';
 
 export default class FramesView {
+  updateFramesNumbers() {
+    const frames = [...document.querySelector('.frames__list').children];
+    frames.forEach((frame, index) => {
+      const number = frame.querySelector('.number');
+      number.innerHTML = index + 1;
+    });
+  }
+
   createFrameButtons() {
     const buttonTips = {
       button__delete: 'Delete this frame',
@@ -12,7 +20,8 @@ export default class FramesView {
     const buttonElements = buttons.map((button) => {
       if (buttonTips[button]) {
         const buttonTip = createElement('span', 'button__tip', `${buttonTips[button]}`);
-        return createElement('button', `button ${button}`, buttonTip);
+        const number = button === 'button__number' ? createElement('span', 'number') : '';
+        return createElement('button', `button ${button}`, buttonTip, number);
       }
       return createElement('button', `button ${button}`);
     });
@@ -39,6 +48,12 @@ export default class FramesView {
     return createElement('div', 'button__wrapper', buttonNewFrame, buttonIcon);
   }
 
+  addNewFrame() {
+    const frame = this.createFrame();
+    document.querySelector('.frames__list').append(frame);
+    this.updateFramesNumbers();
+  }
+
   render() {
     const frame = this.createFrame();
     const framesList = createElement('ul', 'frames__list', frame);
@@ -47,5 +62,7 @@ export default class FramesView {
     const section = createElement('section', 'frames', framesList, buttonNewFrame);
 
     document.querySelector('.main').append(section);
+
+    this.updateFramesNumbers();
   }
 }

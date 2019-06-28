@@ -1,21 +1,12 @@
-import ToolsView from './views/ToolsView';
-import CanvasView from './views/CanvasView';
-import PiskelView from './views/PiskelView';
-import FramesView from './views/FramesView';
-import AnimationView from './views/AnimationView';
+import Render from './views/render';
 import App from './main';
+import Frames from './frames';
 
-const toolsView = new ToolsView();
-const canvasView = new CanvasView();
-const piskelView = new PiskelView('New Piskel');
-const framesView = new FramesView();
-const animationView = new AnimationView();
-
-piskelView.render();
-toolsView.render();
-framesView.render();
-canvasView.render();
-animationView.render();
+const render = new Render();
+render.start();
 
 const app = new App();
 app.start();
+
+const frames = new Frames();
+frames.start();

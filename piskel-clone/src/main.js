@@ -335,7 +335,6 @@ export default class App {
       [x2, y2] = [event.offsetX, event.offsetY];
 
       this.context.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
-
       this.context.putImageData(imageData, x2 - x1, y2 - y1);
     };
 
