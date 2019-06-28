@@ -1,5 +1,6 @@
 import ToolsView from './views/ToolsView';
 import CanvasView from './views/CanvasView';
+import Frames from './frames';
 
 export default class App {
   constructor() {
@@ -9,7 +10,7 @@ export default class App {
     this.context = this.mainCanvas.getContext('2d');
     this.currentTool = 'pen';
     this.canvasSize = 128;
-    this.pixelWidth = 4;
+    this.pixelWidth = 5;
     this.toolsList = document.querySelector('.tools__list');
     this.tools = {
       pen: document.querySelector('.pen-tool'),
@@ -285,10 +286,12 @@ export default class App {
 
     const mouseUpHandler = () => {
       this.transferImage();
+      Frames.getFrame();
     };
 
     const mouseLeaveHandler = () => {
       this.transferImage();
+      Frames.getFrame();
     };
 
     const contextMenuHandler = (event) => {
@@ -408,21 +411,14 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
-      isMouseDown = false;
-      this.ctx.beginPath();
-
-      this.transferImage();
-    };
-
-    const mouseLeaveHandler = () => {
       if (!isMouseDown) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
 
-      isMouseDown = false;
-      this.ctx.beginPath();
-
       this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
+      isMouseDown = false;
     };
 
     const contextMenuHandler = (event) => {
@@ -432,7 +428,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
     ]);
   }
 
@@ -503,10 +499,11 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const mouseLeaveHandler = () => {
@@ -514,10 +511,11 @@ export default class App {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
 
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const contextMenuHandler = (event) => {
@@ -591,10 +589,11 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const mouseLeaveHandler = () => {
@@ -602,10 +601,11 @@ export default class App {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
 
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const contextMenuHandler = (event) => {
@@ -653,10 +653,11 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const mouseLeaveHandler = () => {
@@ -664,10 +665,11 @@ export default class App {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
 
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
       isMouseDown = false;
       this.ctx.beginPath();
-
-      this.transferImage();
     };
 
     const contextMenuHandler = (event) => {

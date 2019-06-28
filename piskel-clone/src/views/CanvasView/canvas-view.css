@@ -29,10 +29,14 @@
 .canvas__main,
 .canvas__drawing {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 40%;
+  left: 40%;
   bottom: 0;
   right: 0;
+
+  image-rendering: pixelated;
+  -webkit-transform: scale(5, 5);
+  transform: scale(5, 5);
 }
 
 .canvas__main {

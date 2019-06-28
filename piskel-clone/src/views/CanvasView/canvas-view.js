@@ -9,12 +9,12 @@ export default class CanvasView {
 
   render() {
     const canvas = createElement('canvas', 'canvas__main');
-    canvas.width = 640;
-    canvas.height = 640;
+    canvas.width = 128;
+    canvas.height = 128;
 
     const canvasDrawing = createElement('canvas', 'canvas__drawing');
-    canvasDrawing.width = 640;
-    canvasDrawing.height = 640;
+    canvasDrawing.width = 128;
+    canvasDrawing.height = 128;
 
     const background = createElement('div', 'canvas__background');
 

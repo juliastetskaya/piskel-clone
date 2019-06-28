@@ -46,6 +46,7 @@
 .frame__canvas {
   background: url('../../images/bg.png') repeat;
   position: relative;
+  image-rendering: pixelated;
 }
 
 .button {
