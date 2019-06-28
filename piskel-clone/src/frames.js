@@ -5,6 +5,7 @@ export default class Frames {
     this.framesView = new FramesView();
     this.mainCanvas = document.querySelector('.canvas__main');
     this.context = this.mainCanvas.getContext('2d');
+    this.dragSrcEl = null;
   }
 
   trackNewFrame() {
@@ -28,6 +29,77 @@ export default class Frames {
   trackFrameList() {
     const frameList = document.querySelector('.frames__list');
     frameList.addEventListener('click', this.changeActiveFrame.bind(this));
+
+    frameList.addEventListener('dragstart', this.dragStartHandler);
+    frameList.addEventListener('dragenter', this.dragEnterHandle);
+    frameList.addEventListener('dragover', this.dragOverHandle);
+    frameList.addEventListener('dragleave', this.dragLeaveHandle);
+    frameList.addEventListener('drop', this.dropHandle);
+    frameList.addEventListener('dragend', this.dragEndHandle.bind(this));
+  }
+
+  dragStartHandler(event) {
+    const { target } = event;
+    target.style.opacity = '0.4';
+
+    this.dragSrcEl = target;
+
+    const e = event;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', window.getComputedStyle(target).order);
+  }
+
+  dragOverHandle(event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    }
+
+    const e = event;
+    e.dataTransfer.dropEffect = 'move';
+
+    return false;
+  }
+
+  dragEnterHandle(event) {
+    const { target } = event;
+    if (target.tagName.toLowerCase() === 'canvas') {
+      target.closest('.frames__item').classList.add('over');
+    }
+  }
+
+  dragLeaveHandle(event) {
+    const { target } = event;
+    if (target.tagName.toLowerCase() === 'canvas') {
+      target.closest('.frames__item').classList.remove('over');
+    }
+  }
+
+  dropHandle(event) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
+
+    const { target } = event;
+    const element = target.closest('.frames__item');
+
+    if (this.dragSrcEl !== element) {
+      this.dragSrcEl.style.order = element.style.order;
+      element.style.order = event.dataTransfer.getData('text/html').slice(-1);
+    }
+
+    return false;
+  }
+
+  dragEndHandle(event) {
+    const over = document.querySelector('.over');
+    if (over) {
+      over.classList.remove('over');
+    }
+
+    const { target } = event;
+    target.style.opacity = '';
+
+    this.framesView.updateFramesNumbers();
   }
 
   static getFrame() {

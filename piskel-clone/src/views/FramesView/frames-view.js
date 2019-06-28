@@ -4,9 +4,9 @@ export default class FramesView {
   updateFramesNumbers() {
     const frameList = document.querySelector('.frames__list');
     const frames = [...frameList.children];
-    frames.forEach((frame, index) => {
+    frames.forEach((frame) => {
       const number = frame.querySelector('.number');
-      number.innerHTML = index + 1;
+      number.innerHTML = frame.style.order;
     });
     const buttonDelete = frameList.firstChild.querySelector('.button__delete');
     const buttonMove = frameList.firstChild.querySelector('.button__move');
@@ -47,8 +47,13 @@ export default class FramesView {
       activeFrame.classList.remove('frame--active');
     }
 
+    const frameList = document.querySelector('.frames__list');
+    const order = frameList.children.length + 1;
+
     const frame = createElement('li', 'frames__item frame--active', frameCanvas, ...buttons);
-    document.querySelector('.frames__list').append(frame);
+    frame.setAttribute('draggable', 'true');
+    frame.style.order = order;
+    frameList.append(frame);
 
     this.updateFramesNumbers();
 

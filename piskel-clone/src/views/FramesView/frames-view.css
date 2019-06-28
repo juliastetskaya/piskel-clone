@@ -110,7 +110,7 @@
 }
 
 .frames__item:hover {
-  border: 3px solid #999999;
+  border-color: #999999;
 }
 
 .frames__item:hover .button {
@@ -237,4 +237,19 @@
   position: absolute;
   top: 15px;
   left: 6px;
+}
+
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.over {
+  border-style: dashed;
+  border-color: #ffd700;
 }
