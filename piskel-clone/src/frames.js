@@ -20,6 +20,9 @@ export default class Frames {
   trackMenuFrame(frame = document) {
     const buttonCopy = frame.querySelector('.button__copy');
     buttonCopy.addEventListener('click', this.copyFrame.bind(this));
+
+    const buttonDelete = frame.querySelector('.button__delete');
+    buttonDelete.addEventListener('click', this.deleteFrame.bind(this));
   }
 
   trackFrameList() {
@@ -37,7 +40,7 @@ export default class Frames {
     const { width, height } = image;
     const activeWidth = activeFrame.width;
     const activeHeight = activeFrame.height;
-
+    ctx.clearRect(0, 0, activeWidth, activeHeight);
     ctx.drawImage(image, 0, 0, width, height, 0, 0, activeWidth, activeHeight);
   }
 
@@ -49,10 +52,21 @@ export default class Frames {
     const destinationCanvas = frame.firstChild;
     const ctx = destinationCanvas.getContext('2d');
 
-    // this.copyMainCanvas();
-
     ctx.drawImage(sourceCanvas, 0, 0);
-    // this.setFrame();
+  }
+
+  deleteFrame(event) {
+    const frame = event.target.closest('.frames__item');
+    document.querySelector('.frames__list').removeChild(frame);
+
+    const frames = document.querySelector('.frames__list');
+
+    if (frame.classList.contains('frame--active')) {
+      frames.lastChild.classList.add('frame--active');
+    }
+
+    this.framesView.updateFramesNumbers();
+    this.setFrame();
   }
 
   setFrame() {

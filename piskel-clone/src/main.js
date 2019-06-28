@@ -137,20 +137,6 @@ export default class App {
     let x1;
     let y1;
 
-    // function hexToRgb(hex) {
-    //   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    //   return result ? {
-    //     r: parseInt(result[1], 16),
-    //     g: parseInt(result[2], 16),
-    //     b: parseInt(result[3], 16),
-    //   } : null;
-    // }
-
-    // const canvasWidth = this.mainCanvas.width;
-    // const canvasHeight = this.mainCanvas.height;
-
-    // const colorLayer = this.context.getImageData(0, 0, canvasWidth, canvasHeight);
-
     const isMatchStartColor = (x, y, color) => {
       console.log(x, y);
       const { data } = this.context.getImageData(x, y, 1, 1);
@@ -158,71 +144,6 @@ export default class App {
       return data[0] === color[0] && data[1] === color[1] && data[2] === color[2]
         && data[3] === color[3];
     };
-
-    // // const colorPixel = (pixelPos, { r: fillColorR, g: fillColorG, b: fillColorB }) => {
-    // //   console.log(fillColorR, fillColorG, fillColorB);
-    // //   colorLayer.data[pixelPos] = fillColorR;
-    // //   colorLayer.data[pixelPos + 1] = fillColorG;
-    // //   colorLayer.data[pixelPos + 2] = fillColorB;
-    // //   colorLayer.data[pixelPos + 3] = 255;
-    // // };
-
-    // const fill = (startX, startY, startColor, fillColor) => {
-    //   let pixelPos;
-    //   let reachLeft;
-    //   let reachRight;
-
-    //   const pixelStack = [[startX, startY]];
-
-    //   while (pixelStack.length) {
-    //     const newPos = pixelStack.pop();
-    //     const x = newPos / this.pixelWidth;
-    //     let y = newPos / this.pixelWidth;
-
-    //     pixelPos = y * canvasWidth + x;
-
-    //     while (y >= 0 && isMatchStartColor(pixelPos, startColor)) {
-    //       pixelPos -= canvasWidth;
-    //     }
-    //     pixelPos += canvasWidth;
-    //     y += 1;
-
-    //     reachLeft = false;
-    //     reachRight = false;
-
-    //     while (y <= canvasHeight && isMatchStartColor(pixelPos, startColor)) {
-    //       // const color = hexToRgb(fillColor);
-    //       // colorPixel(pixelPos, color);
-    //       this.drawPixel(x, y, fillColor);
-
-    //       if (x > 0) {
-    //         if (isMatchStartColor(pixelPos - 1, startColor)) {
-    //           if (!reachLeft) {
-    //             pixelStack.push([x - 1, y]);
-    //             reachLeft = true;
-    //           }
-    //         } else if (reachLeft) {
-    //           reachLeft = false;
-    //         }
-    //       }
-
-    //       if (x < canvasWidth - 1) {
-    //         if (isMatchStartColor(pixelPos + 1, startColor)) {
-    //           if (!reachRight) {
-    //             pixelStack.push([x + 1, y]);
-    //             reachRight = true;
-    //           }
-    //         } else if (reachRight) {
-    //           reachRight = false;
-    //         }
-    //       }
-
-    //       pixelPos += canvasWidth;
-    //     }
-    //   }
-
-    //   this.context.putImageData(colorLayer, 0, 0);
-    // };
 
     const fill = (startX, startY, startColor, fillColor) => {
       let reachLeft;
@@ -499,14 +420,6 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
-      this.transferImage();
-      if (isMouseDown) Frames.getFrame();
-
-      isMouseDown = false;
-      this.ctx.beginPath();
-    };
-
-    const mouseLeaveHandler = () => {
       if (!isMouseDown) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
@@ -524,7 +437,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
     ]);
   }
 
@@ -589,14 +502,6 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
-      this.transferImage();
-      if (isMouseDown) Frames.getFrame();
-
-      isMouseDown = false;
-      this.ctx.beginPath();
-    };
-
-    const mouseLeaveHandler = () => {
       if (!isMouseDown) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
@@ -615,7 +520,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
     ]);
   }
 
@@ -653,14 +558,6 @@ export default class App {
     };
 
     const mouseUpHandler = () => {
-      this.transferImage();
-      if (isMouseDown) Frames.getFrame();
-
-      isMouseDown = false;
-      this.ctx.beginPath();
-    };
-
-    const mouseLeaveHandler = () => {
       if (!isMouseDown) {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
@@ -679,7 +576,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
     ]);
   }
 
