@@ -6,6 +6,7 @@ export default class Frames {
     this.mainCanvas = document.querySelector('.canvas__main');
     this.context = this.mainCanvas.getContext('2d');
     this.dragSrcEl = null;
+    this.startSpeed = 12;
   }
 
   trackNewFrame() {
@@ -36,6 +37,39 @@ export default class Frames {
     frameList.addEventListener('dragleave', this.dragLeaveHandle);
     frameList.addEventListener('drop', this.dropHandle);
     frameList.addEventListener('dragend', this.dragEndHandle.bind(this));
+  }
+
+  startAnimation() {
+    const animation = document.querySelector('.animation__field');
+    const ctx = animation.getContext('2d');
+    const labelAnimation = document.querySelector('.speed__fps');
+    let count = 0;
+    let timer;
+
+    labelAnimation.innerHTML = `${this.startSpeed} FRS`;
+    const { width, height } = animation;
+
+    const start = () => {
+      if (this.startSpeed > 0) {
+        const frames = [...document.querySelector('.frames__list').children];
+        ctx.clearRect(0, 0, width, height);
+        ctx.imageSmoothingEnabled = false;
+        const image = frames[count % frames.length].firstChild;
+        ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, width, height);
+        count += 1;
+      }
+    };
+
+    timer = setInterval(() => start(), 1000 / Number(this.startSpeed));
+
+    const inputRange = document.querySelector('.speed__range');
+    inputRange.addEventListener('input', () => {
+      this.startSpeed = inputRange.value;
+      clearInterval(timer);
+      timer = setInterval(() => start(), 1000 / Number(this.startSpeed));
+
+      labelAnimation.innerHTML = `${this.startSpeed} FRS`;
+    });
   }
 
   dragStartHandler(event) {
@@ -175,5 +209,6 @@ export default class Frames {
     this.trackNewFrame();
     this.trackMenuFrame();
     this.trackFrameList();
+    this.startAnimation();
   }
 }

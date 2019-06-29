@@ -13,11 +13,11 @@ export default class AnimationView {
     const speedRange = createElement('input', 'speed__range');
     speedRange.setAttribute('type', 'range');
     speedRange.setAttribute('name', 'speed');
-    speedRange.setAttribute('value', '10');
+    speedRange.setAttribute('value', '12');
     speedRange.setAttribute('min', '0');
     speedRange.setAttribute('max', '24');
 
-    const fps = createElement('span', 'speed__fps', '10 FPS');
+    const fps = createElement('span', 'speed__fps');
 
     return createElement('div', 'speed__wrapper', fps, speedRange);
   }

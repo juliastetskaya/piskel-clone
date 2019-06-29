@@ -8,6 +8,7 @@
 
 .animation__field {
   background: url('../../images/bg.png') repeat;
+  image-rendering: pixelated;
 }
 
 .speed__wrapper {
