@@ -84,7 +84,7 @@ export default class Frames {
 
     if (this.dragSrcEl !== element) {
       this.dragSrcEl.style.order = element.style.order;
-      element.style.order = event.dataTransfer.getData('text/html').slice(-1);
+      element.style.order = event.dataTransfer.getData('text/html').slice(66);
     }
 
     return false;
@@ -129,9 +129,17 @@ export default class Frames {
 
   deleteFrame(event) {
     const frame = event.target.closest('.frames__item');
+    const { order } = frame.style;
     document.querySelector('.frames__list').removeChild(frame);
 
     const frames = document.querySelector('.frames__list');
+
+    [...frames.children].forEach((child) => {
+      if (child.style.order > order) {
+        const fr = child;
+        fr.style.order -= 1;
+      }
+    });
 
     if (frame.classList.contains('frame--active')) {
       frames.lastChild.classList.add('frame--active');
