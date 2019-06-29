@@ -21,16 +21,15 @@
 }
 
 .canvas__background {
-  width: 640px;
-  height: 640px;
   background: url('../../images/bg.png') repeat;
 }
 
 .canvas__main,
 .canvas__drawing {
+  --width: 32px;
   position: absolute;
-  top: 40%;
-  left: 40%;
+  top: calc(50% - var(--width) / 2);
+  left: calc(50% - var(--width) / 2);
   bottom: 0;
   right: 0;
 

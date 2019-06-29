@@ -1,22 +1,35 @@
 import createElement from '../../lib';
 
 export default class CanvasView {
+  constructor() {
+    this.scale = 20;
+    this.width = 32;
+    this.height = 32;
+  }
+
   static addClassCursor(tool) {
     const canvas = document.querySelector('.canvas__wrapper');
     canvas.classList = 'canvas__wrapper';
     canvas.classList.add(`cursor-${tool}`);
   }
 
-  render() {
-    const canvas = createElement('canvas', 'canvas__main');
-    canvas.width = 128;
-    canvas.height = 128;
+  createCanvas(width, height, className) {
+    const canvas = createElement('canvas', className);
+    canvas.width = width;
+    canvas.height = height;
 
-    const canvasDrawing = createElement('canvas', 'canvas__drawing');
-    canvasDrawing.width = 128;
-    canvasDrawing.height = 128;
+    return canvas;
+  }
+
+  render() {
+    const canvas = this.createCanvas(this.width, this.height, 'canvas__main');
+    const canvasDrawing = this.createCanvas(this.width, this.height, 'canvas__drawing');
+    canvas.style.transform = `scale(${this.scale},${this.scale})`;
+    canvasDrawing.style.transform = `scale(${this.scale},${this.scale})`;
 
     const background = createElement('div', 'canvas__background');
+    background.style.width = `${this.width * this.scale}px`;
+    background.style.height = `${this.height * this.scale}px`;
 
     const container = createElement('div', 'canvas__container', background, canvas, canvasDrawing);
     const wrapper = createElement('div', 'canvas__wrapper cursor-pen', container);

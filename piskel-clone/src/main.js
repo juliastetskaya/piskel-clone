@@ -9,8 +9,8 @@ export default class App {
     this.ctx = this.canvas.getContext('2d');
     this.context = this.mainCanvas.getContext('2d');
     this.currentTool = 'pen';
-    this.canvasSize = 128;
-    this.pixelWidth = 5;
+    this.pixelWidth = 0;
+    this.scale = 20;
     this.toolsList = document.querySelector('.tools__list');
     this.tools = {
       pen: document.querySelector('.pen-tool'),
@@ -56,8 +56,46 @@ export default class App {
     const penSizeList = document.querySelector('.pen-size__list');
     penSizeList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
-      this.pixelWidth = (this.canvas.width / this.canvasSize) * Number(target.dataset.size);
+      console.log(this.canvas.width);
+      this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
+    });
+  }
+
+  resize() {
+    const buttons = document.querySelector('.size-field__buttons');
+    buttons.addEventListener('click', ({ target }) => {
+      const scales = {
+        32: 20,
+        64: 10,
+        128: 5,
+      };
+      const newSize = target.dataset.canvasSize;
+      const oldSize = this.mainCanvas.width;
+      this.mainCanvas.style.setProperty('--width', `${newSize}px`);
+      this.canvas.style.setProperty('--width', `${newSize}px`);
+
+      this.scale = scales[newSize];
+
+      const image = this.context.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+
+      this.mainCanvas.width = newSize;
+      this.mainCanvas.height = newSize;
+
+      const coord = (newSize - oldSize) / 2;
+      this.context.putImageData(image, coord, coord);
+
+      this.canvas.width = newSize;
+      this.canvas.height = newSize;
+
+      const background = document.querySelector('.canvas__background');
+      background.style.width = `${newSize * this.scale}px`;
+      background.style.height = `${newSize * this.scale}px`;
+
+      this.canvas.style.transform = `scale(${this.scale},${this.scale})`;
+      this.mainCanvas.style.transform = `scale(${this.scale},${this.scale})`;
+
+      Frames.getFrame();
     });
   }
 
@@ -138,7 +176,6 @@ export default class App {
     let y1;
 
     const isMatchStartColor = (x, y, color) => {
-      console.log(x, y);
       const { data } = this.context.getImageData(x, y, 1, 1);
 
       return data[0] === color[0] && data[1] === color[1] && data[2] === color[2]
@@ -581,9 +618,11 @@ export default class App {
   }
 
   start() {
+    this.pixelWidth = this.canvas.width / 32;
     this.setTool();
     this.setPixelWidth();
     this.setColors();
     this.draw();
+    this.resize();
   }
 }
