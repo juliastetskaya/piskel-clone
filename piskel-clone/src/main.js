@@ -56,7 +56,6 @@ export default class App {
     const penSizeList = document.querySelector('.pen-size__list');
     penSizeList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
-      console.log(this.canvas.width);
       this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
@@ -130,15 +129,15 @@ export default class App {
     this.listners = {};
   }
 
-  colorPicker() {
-    const rgbToHex = (arr) => {
-      const arrHex = arr.map((x) => {
-        const num = parseInt(x, 10).toString(16);
-        return (num.length === 1) ? `0${num}` : num;
-      });
-      return `#${arrHex.join('')}`;
-    };
+  rgbToHex(arr) {
+    const arrHex = arr.map((x) => {
+      const num = parseInt(x, 10).toString(16);
+      return (num.length === 1) ? `0${num}` : num;
+    });
+    return `#${arrHex.join('')}`;
+  }
 
+  colorPicker() {
     const getColor = (event, right = true) => {
       const arr = [];
       const [x, y] = [event.offsetX, event.offsetY];
@@ -148,10 +147,10 @@ export default class App {
         arr.push(data[i]);
       }
       if (right) {
-        this.firstColor = rgbToHex(arr);
+        this.firstColor = this.rgbToHex(arr);
         document.querySelector('.first-color__input').value = this.firstColor;
       } else {
-        this.secondColor = rgbToHex(arr);
+        this.secondColor = this.rgbToHex(arr);
         document.querySelector('.second-color__input').value = this.secondColor;
       }
     };
@@ -171,7 +170,6 @@ export default class App {
   }
 
   bucket() {
-    let rightKey;
     let x1;
     let y1;
 
@@ -183,6 +181,8 @@ export default class App {
     };
 
     const fill = (startX, startY, startColor, fillColor) => {
+      if (this.rgbToHex([...startColor].slice(0, -1)) === fillColor) return;
+      console.log(' ne return');
       let reachLeft;
       let reachRight;
 
@@ -195,7 +195,6 @@ export default class App {
         const newPos = pixelStack.pop();
         const [x] = newPos;
         let [, y] = newPos;
-
 
         while (y >= 0 && isMatchStartColor(x, y, startColor)) {
           y -= this.pixelWidth;
@@ -212,9 +211,8 @@ export default class App {
                 pixelStack.push([x - this.pixelWidth, y]);
                 reachLeft = true;
               }
-            } else if (reachLeft) {
-              reachLeft = false;
             }
+            reachLeft = false;
           }
 
           if (x < canvasWidth) {
@@ -223,23 +221,23 @@ export default class App {
                 pixelStack.push([x + this.pixelWidth, y]);
                 reachRight = true;
               }
-            } else if (reachRight) {
-              reachRight = false;
             }
+            reachRight = false;
           }
 
           y += this.pixelWidth;
         }
+        reachRight = false;
+        reachLeft = false;
+        this.transferImage();
       }
     };
 
 
     const mouseDownHandler = (event) => {
-      rightKey = true;
-
       [x1, y1] = [event.offsetX, event.offsetY];
       const { data } = this.context.getImageData(x1, y1, 1, 1);
-      fill(x1, y1, data, rightKey ? this.firstColor : this.secondColor);
+      fill(x1, y1, data, event.which === 1 ? this.firstColor : this.secondColor);
     };
 
     const mouseUpHandler = () => {
@@ -247,18 +245,12 @@ export default class App {
       Frames.getFrame();
     };
 
-    const mouseLeaveHandler = () => {
-      this.transferImage();
-      Frames.getFrame();
-    };
-
     const contextMenuHandler = (event) => {
       event.preventDefault();
-      rightKey = false;
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseLeaveHandler,
+      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseUpHandler,
     ]);
   }
 
