@@ -220,6 +220,10 @@
   background-position: -228px -138px;
 }
 
+.lighten {
+  background-position: -138px -228px;
+}
+
 .first-color,
 .second-color {
   height: 46px;

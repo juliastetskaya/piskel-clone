@@ -21,6 +21,7 @@ export default class App {
       rectangle: document.querySelector('.rectangle-tool'),
       circle: document.querySelector('.circle-tool'),
       move: document.querySelector('.move-tool'),
+      lighten: document.querySelector('.lighten'),
       picker: document.querySelector('.color-picker'),
     };
     this.handlers = {
@@ -32,6 +33,7 @@ export default class App {
       rectangle: () => this.drawRectangle(),
       circle: () => this.drawCircle(),
       move: () => this.move(),
+      lighten: () => this.lighten(),
       picker: () => this.colorPicker(),
     };
     this.listners = {};
@@ -66,6 +68,50 @@ export default class App {
       this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
+  }
+
+  lighten() {
+    let x1;
+    let y1;
+    let mouseDown = false;
+
+
+    const light = (x, y, image) => {
+      const color = image.data;
+      color[0] = color[0] < 255 ? color[0] + 10 : color[0];
+      color[1] = color[1] < 255 ? color[1] + 10 : color[1];
+      color[2] = color[2] < 255 ? color[2] + 10 : color[2];
+      this.context.putImageData(image, x, y);
+    };
+
+
+    const mouseDownHandler = (event) => {
+      mouseDown = true;
+      [x1, y1] = [event.offsetX, event.offsetY];
+      const image = this.context.getImageData(x1, y1, 1, 1);
+      light(x1, y1, image);
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!mouseDown) return;
+      [x1, y1] = [event.offsetX, event.offsetY];
+      const image = this.context.getImageData(x1, y1, 1, 1);
+      light(x1, y1, image);
+    };
+
+    const mouseUpHandler = () => {
+      mouseDown = false;
+      this.transferImage();
+      Frames.getFrame();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
+    ]);
   }
 
   colorSwap() {
