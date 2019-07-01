@@ -15,6 +15,7 @@ export default class App {
     this.tools = {
       pen: document.querySelector('.pen-tool'),
       bucket: document.querySelector('.paint-bucket-tool'),
+      colorSwap: document.querySelector('.paint-all-pixels-of-the-same-color'),
       eraser: document.querySelector('.eraser-tool'),
       stroke: document.querySelector('.stroke-tool'),
       rectangle: document.querySelector('.rectangle-tool'),
@@ -25,6 +26,7 @@ export default class App {
     this.handlers = {
       pen: () => this.draw(),
       bucket: () => this.bucket(),
+      colorSwap: () => this.colorSwap(),
       eraser: () => this.draw(),
       stroke: () => this.drawStroke(),
       rectangle: () => this.drawRectangle(),
@@ -64,6 +66,50 @@ export default class App {
       this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
+  }
+
+  colorSwap() {
+    let x1;
+    let y1;
+
+    const canvasWidth = this.mainCanvas.width;
+    const canvasHeight = this.mainCanvas.height;
+
+    const isMatchStartColor = (x, y, color) => {
+      const { data } = this.context.getImageData(x, y, 1, 1);
+
+      return data[0] === color[0] && data[1] === color[1] && data[2] === color[2]
+        && data[3] === color[3];
+    };
+
+    const colorFill = (startColor, fillColor) => {
+      for (let x = 0; x < canvasWidth; x += 1) {
+        for (let y = 0; y < canvasHeight; y += 1) {
+          if (isMatchStartColor(x, y, startColor)) {
+            this.drawPixel(x, y, fillColor);
+          }
+        }
+      }
+    };
+
+    const mouseDownHandler = (event) => {
+      [x1, y1] = [event.offsetX, event.offsetY];
+      const { data } = this.context.getImageData(x1, y1, 1, 1);
+      colorFill(data, event.which === 1 ? this.firstColor : this.secondColor);
+    };
+
+    const mouseUpHandler = () => {
+      this.transferImage();
+      Frames.getFrame();
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseUpHandler,
+    ]);
   }
 
   resize() {
@@ -187,7 +233,8 @@ export default class App {
     };
 
     const fill = (startX, startY, startColor, fillColor) => {
-      if (this.rgbToHex([...startColor].slice(0, -1)) === fillColor) return;
+      const color = this.rgbToHex([...startColor].slice(0, -1));
+      if (color === fillColor && startColor[3] === 255) return;
       let reachLeft;
       let reachRight;
 

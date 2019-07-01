@@ -216,6 +216,10 @@
   background-position: -184px -228px;
 }
 
+.paint-all-pixels-of-the-same-color {
+  background-position: -228px -138px;
+}
+
 .first-color,
 .second-color {
   height: 46px;

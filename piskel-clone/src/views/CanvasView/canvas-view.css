@@ -50,7 +50,8 @@
   cursor: url('../../images/cursors/pen.png'), default;
 }
 
-.cursor-bucket {
+.cursor-bucket,
+.cursor-colorSwap {
   cursor: url('../../images/cursors/paint-bucket.png'), default;
 }
 
