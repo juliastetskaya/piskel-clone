@@ -36,6 +36,11 @@ export default class App {
     this.events = ['mousedown', 'contextmenu', 'mousemove', 'mouseup', 'mouseleave'];
     this.firstColor = document.querySelector('.first-color__input').value;
     this.secondColor = document.querySelector('.second-color__input').value;
+    this.scales = {
+      32: 20,
+      64: 10,
+      128: 5,
+    };
   }
 
   setTool() {
@@ -64,17 +69,18 @@ export default class App {
   resize() {
     const buttons = document.querySelector('.size-field__buttons');
     buttons.addEventListener('click', ({ target }) => {
-      const scales = {
-        32: 20,
-        64: 10,
-        128: 5,
-      };
+      if (target.tagName.toLowerCase() !== 'button') return;
+
+      const activeButton = document.querySelector('.resize-button--active');
+      if (activeButton) activeButton.classList.remove('resize-button--active');
+      target.classList.add('resize-button--active');
+
       const newSize = target.dataset.canvasSize;
       const oldSize = this.mainCanvas.width;
       this.mainCanvas.style.setProperty('--width', `${newSize}px`);
       this.canvas.style.setProperty('--width', `${newSize}px`);
 
-      this.scale = scales[newSize];
+      this.scale = this.scales[newSize];
 
       const image = this.context.getImageData(0, 0, this.mainCanvas.width, this.mainCanvas.height);
 
@@ -182,7 +188,6 @@ export default class App {
 
     const fill = (startX, startY, startColor, fillColor) => {
       if (this.rgbToHex([...startColor].slice(0, -1)) === fillColor) return;
-      console.log(' ne return');
       let reachLeft;
       let reachRight;
 

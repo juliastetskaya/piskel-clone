@@ -25,7 +25,8 @@ export default class AnimationView {
   createSizePanel() {
     const text = createElement('p', 'size-field__text', 'Resize canvas');
     const buttons = [32, 64, 128].map((size) => {
-      const element = createElement('button', 'resize-button', `${size}x${size}`);
+      const className = size === 32 ? 'resize-button resize-button--active' : 'resize-button';
+      const element = createElement('button', `${className}`, `${size}x${size}`);
       element.setAttribute('data-canvas-size', `${size}`);
 
       return element;

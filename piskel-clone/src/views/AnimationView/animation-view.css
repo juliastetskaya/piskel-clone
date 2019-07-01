@@ -59,9 +59,13 @@
 
 .resize-button:hover {
   border-color: #ffd700;
-  color: #ffd700;
 }
 
 .resize-button:last-child {
   margin-right: 0;
+}
+
+.resize-button--active {
+  border-color: #ffd700;
+  color: #ffd700;
 }
