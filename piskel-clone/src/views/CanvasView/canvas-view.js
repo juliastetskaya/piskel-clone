@@ -33,7 +33,13 @@ export default class CanvasView {
 
     const container = createElement('div', 'canvas__container', background, canvas, canvasDrawing);
     const wrapper = createElement('div', 'canvas__wrapper cursor-pen', container);
-    const section = createElement('section', 'canvas', wrapper);
+
+    const canvasSize = createElement('span', 'size', `[${this.width}x${this.height}] `);
+    const coords = createElement('span', 'coords');
+
+    const cursorCoords = createElement('div', 'cursor-coordinates', canvasSize, coords);
+
+    const section = createElement('section', 'canvas', wrapper, cursorCoords);
 
     document.querySelector('.main').append(section);
   }

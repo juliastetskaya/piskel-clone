@@ -4,6 +4,8 @@
 
   margin-right: 12px;
   margin-left: 7px;
+
+  position: relative;
 }
 
 .canvas__wrapper {
@@ -77,4 +79,27 @@
 
 .cursor-picker {
   cursor: url('../../images/cursors/dropper.png'), default;
+}
+
+.cursor-coordinates {
+  position: absolute;
+  bottom: 200px;
+  right: -160px;
+
+  display: flex;
+  width: 150px;
+}
+
+.coords,
+.size {
+  color: #ffd700;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: monospace;
+
+  /* width: 70px; */
+}
+
+.size {
+  margin-right: 5px;
 }

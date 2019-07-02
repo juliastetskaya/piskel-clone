@@ -47,6 +47,16 @@ export default class App {
     };
   }
 
+  showCursorCoords() {
+    const cursorCoords = document.querySelector('.coords');
+    this.canvas.addEventListener('mousemove', (event) => {
+      cursorCoords.innerHTML = `${event.offsetX}:${event.offsetY}`;
+    });
+    this.mainCanvas.addEventListener('mousemove', (event) => {
+      cursorCoords.innerHTML = `${event.offsetX}:${event.offsetY}`;
+    });
+  }
+
   setTool() {
     this.toolsList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
@@ -192,6 +202,9 @@ export default class App {
       this.canvas.style.transform = `scale(${this.scale},${this.scale})`;
       this.mainCanvas.style.transform = `scale(${this.scale},${this.scale})`;
 
+      const canvasSize = document.querySelector('.size');
+      canvasSize.innerHTML = `[${newSize}x${newSize}] `;
+
       Frames.getFrame();
     });
   }
@@ -268,9 +281,6 @@ export default class App {
   }
 
   bucket() {
-    let x1;
-    let y1;
-
     const isMatchStartColor = (x, y, color) => {
       const { data } = this.context.getImageData(x, y, 1, 1);
 
@@ -325,15 +335,13 @@ export default class App {
 
           y += this.pixelWidth;
         }
-        reachRight = false;
-        reachLeft = false;
         this.transferImage();
       }
     };
 
 
     const mouseDownHandler = (event) => {
-      [x1, y1] = [event.offsetX, event.offsetY];
+      const [x1, y1] = [event.offsetX, event.offsetY];
       const { data } = this.context.getImageData(x1, y1, 1, 1);
       fill(x1, y1, data, event.which === 1 ? this.firstColor : this.secondColor);
     };
@@ -714,5 +722,6 @@ export default class App {
     this.setColors();
     this.draw();
     this.resize();
+    this.showCursorCoords();
   }
 }
