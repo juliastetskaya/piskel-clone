@@ -56,6 +56,7 @@ body {
 
 .main-nav {
   display: flex;
+  position: relative;
 }
 
 .button__nav {
@@ -73,6 +74,56 @@ body {
   text-decoration: none;
 }
 
-.button_create-sprite {
+.create-sprite {
   margin-right: 6px;
+}
+
+.g-signin2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.g-signin2 > div {
+  background-color: transparent;
+  color: transparent;
+  width: 63px !important;
+  height: 24px !important;
+  box-shadow: none;
+}
+
+.g-signin2 > div:hover {
+  box-shadow: none;
+}
+
+.g-signin2 > div:active {
+  background-color: transparent;
+  color: transparent;
+  outline: none;
+}
+
+.g-signin2 > div > div > div {
+  display: none;
+}
+
+.login {
+  display: none;
+  align-items: center;
+  margin: 0;
+  padding: 0 8px;
+  margin-right: 5px;
+
+  cursor: pointer;
+}
+
+.img-login {
+  width: 20px;
+  height: 20px;
+
+  margin-right: 5px;
+}
+
+.logout {
+  display: none;
+  cursor: pointer;
 }
