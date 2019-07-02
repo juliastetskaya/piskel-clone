@@ -22,6 +22,7 @@ export default class Tools {
       circle: document.querySelector('.circle-tool'),
       move: document.querySelector('.move-tool'),
       lighten: document.querySelector('.lighten'),
+      dithering: document.querySelector('.dithering-tool'),
       picker: document.querySelector('.color-picker'),
     };
     this.handlers = {
@@ -34,6 +35,7 @@ export default class Tools {
       circle: () => this.drawCircle(),
       move: () => this.move(),
       lighten: () => this.lighten(),
+      dithering: () => this.dithering(),
       picker: () => this.colorPicker(),
     };
     this.listners = {};
@@ -80,6 +82,55 @@ export default class Tools {
       this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
+  }
+
+  dithering() {
+    let isMouseDown = false;
+    let colorFirst;
+    let colorSecond;
+
+    const mouseDownHandler = (event) => {
+      isMouseDown = true;
+      colorFirst = event.which === 1 ? this.firstColor : this.secondColor;
+      colorSecond = event.which === 1 ? this.secondColor : this.firstColor;
+    };
+
+    const mouseMoveHandler = (event) => {
+      if (!isMouseDown) {
+        const [x, y] = [event.offsetX, event.offsetY];
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)', false);
+        return;
+      }
+
+      const [x, y] = [event.offsetX, event.offsetY];
+
+      if ((x + y) % 2 === 0) {
+        this.drawPixel(x, y, colorFirst);
+      } else {
+        this.drawPixel(x, y, colorSecond);
+      }
+    };
+
+    const mouseUpHandler = () => {
+      if (!isMouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      this.transferImage();
+      if (isMouseDown) Frames.getFrame();
+
+      isMouseDown = false;
+    };
+
+    const contextMenuHandler = (event) => {
+      event.preventDefault();
+    };
+
+    this.addListners([
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseUpHandler,
+    ]);
   }
 
   lighten() {

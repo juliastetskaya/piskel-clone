@@ -81,6 +81,14 @@
   cursor: url('../../images/cursors/dropper.png'), default;
 }
 
+.cursor-dithering {
+  cursor: url('../../images/cursors/dither.png'), default;
+}
+
+.cursor-lighten {
+  cursor: url('../../images/cursors/lighten.png'), default;
+}
+
 .cursor-coordinates {
   position: absolute;
   bottom: 200px;

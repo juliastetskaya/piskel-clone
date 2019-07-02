@@ -224,6 +224,10 @@
   background-position: -138px -228px;
 }
 
+.dithering-tool {
+  background-position: 0px -228px;
+}
+
 .first-color,
 .second-color {
   height: 46px;

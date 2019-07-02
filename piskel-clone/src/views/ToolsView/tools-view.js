@@ -3,8 +3,8 @@ import createElement from '../../lib';
 export default class ToolsView {
   constructor() {
     this.penSizes = [1, 2, 3, 4];
-    this.tools = ['Pen tool', 'Paint bucket tool', 'Paint all pixels of the same color', 'Eraser tool', 'Stroke tool', 'Rectangle tool', 'Circle tool', 'Move tool', 'Lighten', 'Color picker'];
-    this.shortcuts = ['P', 'B', 'A', 'E', 'L', 'R', 'C', 'M', 'U', 'O'];
+    this.tools = ['Pen tool', 'Paint bucket tool', 'Paint all pixels of the same color', 'Eraser tool', 'Stroke tool', 'Rectangle tool', 'Circle tool', 'Move tool', 'Lighten', 'Dithering tool', 'Color picker'];
+    this.shortcuts = ['P', 'B', 'A', 'E', 'L', 'R', 'C', 'M', 'U', 'T', 'O'];
   }
 
   static addClassActiveTool(element) {

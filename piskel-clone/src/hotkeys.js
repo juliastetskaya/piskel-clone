@@ -38,6 +38,10 @@ export default class Hotkeys {
       event.preventDefault();
       document.querySelector('.lighten').click();
     });
+    hotkeys('t', (event) => {
+      event.preventDefault();
+      document.querySelector('.dithering-tool').click();
+    });
     hotkeys('o', (event) => {
       event.preventDefault();
       document.querySelector('.color-picker').click();
