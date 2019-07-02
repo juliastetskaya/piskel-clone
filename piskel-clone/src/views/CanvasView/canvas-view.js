@@ -36,8 +36,9 @@ export default class CanvasView {
 
     const canvasSize = createElement('span', 'size', `[${this.width}x${this.height}] `);
     const coords = createElement('span', 'coords');
+    const frameNumber = createElement('span', 'frame-number', '1/1');
 
-    const cursorCoords = createElement('div', 'cursor-coordinates', canvasSize, coords);
+    const cursorCoords = createElement('div', 'cursor-coordinates', canvasSize, coords, frameNumber);
 
     const section = createElement('section', 'canvas', wrapper, cursorCoords);
 

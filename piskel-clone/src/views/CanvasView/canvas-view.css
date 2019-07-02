@@ -84,22 +84,27 @@
 .cursor-coordinates {
   position: absolute;
   bottom: 200px;
-  right: -160px;
+  right: -130px;
 
   display: flex;
-  width: 150px;
+  flex-wrap: wrap;
+  width: 120px;
 }
 
 .coords,
-.size {
+.size,
+.frame-number {
   color: #ffd700;
   font-size: 12px;
   font-weight: bold;
   font-family: monospace;
-
-  /* width: 70px; */
+  line-height: 1.1;
 }
 
 .size {
   margin-right: 5px;
+}
+
+.coords {
+  width: 50px;
 }

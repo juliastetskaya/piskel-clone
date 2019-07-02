@@ -9,11 +9,20 @@ export default class Frames {
     this.startSpeed = 12;
   }
 
+  showFrameNumber() {
+    const frameNumber = document.querySelector('.frame-number');
+    const frameList = document.querySelector('.frames__list');
+    const activeFrame = document.querySelector('.frame--active');
+
+    frameNumber.innerHTML = `${activeFrame.style.order}/${frameList.children.length}`;
+  }
+
   trackNewFrame() {
     const buttonNewFrame = document.querySelector('.frames__button');
     buttonNewFrame.addEventListener('click', () => {
       const frame = this.framesView.createFrame();
       this.trackMenuFrame(frame);
+      this.showFrameNumber();
 
       this.context.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
     });
@@ -153,6 +162,7 @@ export default class Frames {
   copyFrame(event) {
     const frame = this.framesView.createFrame();
     this.trackMenuFrame(frame);
+    this.showFrameNumber();
 
     const sourceCanvas = event.target.parentNode.firstChild;
     const destinationCanvas = frame.firstChild;
@@ -181,6 +191,7 @@ export default class Frames {
 
     this.framesView.updateFramesNumbers();
     this.setFrame();
+    this.showFrameNumber();
   }
 
   setFrame() {
@@ -202,6 +213,7 @@ export default class Frames {
       activeFrame.classList.remove('frame--active');
       event.target.parentNode.classList.add('frame--active');
       this.setFrame();
+      this.showFrameNumber();
     }
   }
 

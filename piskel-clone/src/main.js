@@ -2,7 +2,7 @@ import ToolsView from './views/ToolsView';
 import CanvasView from './views/CanvasView';
 import Frames from './frames';
 
-export default class App {
+export default class Tools {
   constructor() {
     this.canvas = document.querySelector('.canvas__drawing');
     this.mainCanvas = document.querySelector('.canvas__main');
@@ -49,11 +49,13 @@ export default class App {
 
   showCursorCoords() {
     const cursorCoords = document.querySelector('.coords');
-    this.canvas.addEventListener('mousemove', (event) => {
-      cursorCoords.innerHTML = `${event.offsetX}:${event.offsetY}`;
-    });
-    this.mainCanvas.addEventListener('mousemove', (event) => {
-      cursorCoords.innerHTML = `${event.offsetX}:${event.offsetY}`;
+    [this.canvas, this.mainCanvas].forEach((canvas) => {
+      canvas.addEventListener('mousemove', (event) => {
+        cursorCoords.innerHTML = `${event.offsetX}:${event.offsetY}`;
+      });
+      canvas.addEventListener('mouseleave', () => {
+        cursorCoords.innerHTML = '';
+      });
     });
   }
 
@@ -154,9 +156,20 @@ export default class App {
       colorFill(data, event.which === 1 ? this.firstColor : this.secondColor);
     };
 
+    const mouseMoveHandler = (event) => {
+      const [x, y] = [event.offsetX, event.offsetY];
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)', false);
+    };
+
     const mouseUpHandler = () => {
       this.transferImage();
       Frames.getFrame();
+    };
+
+    const mouseLeaveHandler = () => {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     const contextMenuHandler = (event) => {
@@ -164,7 +177,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseUpHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
     ]);
   }
 
@@ -346,9 +359,20 @@ export default class App {
       fill(x1, y1, data, event.which === 1 ? this.firstColor : this.secondColor);
     };
 
+    const mouseMoveHandler = (event) => {
+      const [x, y] = [event.offsetX, event.offsetY];
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawPixel(x, y, 'rgba(179, 179, 179, 0.3)', false);
+    };
+
     const mouseUpHandler = () => {
       this.transferImage();
       Frames.getFrame();
+    };
+
+    const mouseLeaveHandler = () => {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     const contextMenuHandler = (event) => {
@@ -356,7 +380,7 @@ export default class App {
     };
 
     this.addListners([
-      mouseDownHandler, contextMenuHandler, null, mouseUpHandler, mouseUpHandler,
+      mouseDownHandler, contextMenuHandler, mouseMoveHandler, mouseUpHandler, mouseLeaveHandler,
     ]);
   }
 
@@ -379,6 +403,8 @@ export default class App {
     let y1;
     let y2;
     let imageData;
+
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     const mouseDownHandler = (event) => {
       isMouseDown = true;
