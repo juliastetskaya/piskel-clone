@@ -38,6 +38,8 @@
 
 .size-field {
   margin: 0 auto;
+
+  margin-bottom: 30px;
 }
 
 .size-field__text {
@@ -49,7 +51,9 @@
   margin-bottom: 5px;
 }
 
-.resize-button {
+.resize-button,
+.save-button,
+.button-gif {
   padding: 5px;
   margin-right: 10px;
 
@@ -62,7 +66,9 @@
   font-size: 12px;
 }
 
-.resize-button:hover {
+.resize-button:hover,
+.save-button:hover,
+.button-gif:hover {
   border-color: #ffd700;
 }
 
@@ -73,4 +79,27 @@
 .resize-button--active {
   border-color: #ffd700;
   color: #ffd700;
+}
+
+.save-button {
+  text-transform: uppercase;
+  color: #ffd700;
+  margin: 0 auto;
+  width: 180px;
+
+  margin-bottom: 10px;
+}
+
+.downloaders__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-gif {
+  display: none;
+
+  margin: 0 auto;
+  width: 45px;
+  text-align: center;
+  text-decoration: none;
 }

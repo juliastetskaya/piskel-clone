@@ -1,3 +1,4 @@
+import GIF from 'gif.js.optimized';
 import FramesView from './views/FramesView';
 
 export default class Frames {
@@ -6,7 +7,7 @@ export default class Frames {
     this.mainCanvas = document.querySelector('.canvas__main');
     this.context = this.mainCanvas.getContext('2d');
     this.dragSrcEl = null;
-    this.startSpeed = 12;
+    this.speed = 12;
   }
 
   showFrameNumber() {
@@ -55,11 +56,11 @@ export default class Frames {
     let count = 0;
     let timer;
 
-    labelAnimation.innerHTML = `${this.startSpeed} FRS`;
+    labelAnimation.innerHTML = `${this.speed} FRS`;
     const { width, height } = animation;
 
     const start = () => {
-      if (this.startSpeed > 0) {
+      if (this.speed > 0) {
         const frames = [...document.querySelector('.frames__list').children];
         ctx.clearRect(0, 0, width, height);
         ctx.imageSmoothingEnabled = false;
@@ -69,15 +70,15 @@ export default class Frames {
       }
     };
 
-    timer = setInterval(() => start(), 1000 / Number(this.startSpeed));
+    timer = setInterval(() => start(), 1000 / Number(this.speed));
 
     const inputRange = document.querySelector('.speed__range');
     inputRange.addEventListener('input', () => {
-      this.startSpeed = inputRange.value;
+      this.speed = inputRange.value;
       clearInterval(timer);
-      timer = setInterval(() => start(), 1000 / Number(this.startSpeed));
+      timer = setInterval(() => start(), 1000 / Number(this.speed));
 
-      labelAnimation.innerHTML = `${this.startSpeed} FRS`;
+      labelAnimation.innerHTML = `${this.speed} FRS`;
     });
   }
 
@@ -143,6 +144,39 @@ export default class Frames {
     target.style.opacity = '';
 
     this.framesView.updateFramesNumbers();
+  }
+
+  exportFile() {
+    const exportGIF = () => {
+      const frames = document.querySelectorAll('.frame__canvas');
+      const speed = document.querySelector('.speed__range');
+      const buttonGif = document.querySelector('.button-gif');
+      console.log(frames);
+      const gif = new GIF({
+        workers: 2,
+        quality: 10,
+        workerScript: './gif.worker.js',
+        repeat: 0,
+        width: frames[0].width,
+        height: frames[0].height,
+        background: frames[0].style.background,
+      });
+
+      frames.forEach(frame => gif.addFrame(frame, { delay: speed.value }));
+
+      gif.on('finished', (blob) => {
+        buttonGif.style.display = 'block';
+        buttonGif.href = URL.createObjectURL(blob);
+      });
+
+      gif.render();
+
+      buttonGif.addEventListener('click', () => {
+        buttonGif.style.display = 'none';
+      });
+    };
+
+    document.querySelector('.save-button').addEventListener('click', exportGIF);
   }
 
   static getFrame() {
@@ -222,5 +256,6 @@ export default class Frames {
     this.trackMenuFrame();
     this.trackFrameList();
     this.startAnimation();
+    this.exportFile();
   }
 }

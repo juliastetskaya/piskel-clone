@@ -35,11 +35,23 @@ export default class AnimationView {
     return createElement('div', 'size-field', text, wrapper);
   }
 
+  createDownloaders() {
+    const buttonSave = createElement('button', 'save-button', 'Download');
+    const buttonGif = createElement('a', 'button-gif', 'GIF');
+    buttonGif.setAttribute('download', 'piskel');
+
+    const wrapper = createElement('div', 'downloaders__wrapper', buttonSave, buttonGif);
+
+    return wrapper;
+  }
+
   render() {
     const animation = this.createAnimationCanvas();
     const speedPanel = this.createSpeedPanel();
     const sizePanel = this.createSizePanel();
-    const section = createElement('section', 'animation', animation, speedPanel, sizePanel);
+    const downloaders = this.createDownloaders();
+
+    const section = createElement('section', 'animation', animation, speedPanel, sizePanel, downloaders);
 
     document.querySelector('.main').append(section);
   }
