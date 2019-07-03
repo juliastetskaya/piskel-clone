@@ -2,7 +2,7 @@
   "name": "piskel-clone",
   "version": "0.0.1",
   "description": "Pixel drawing and animation application",
-  "main": "src/app.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest",
     "lint": "eslint src/",

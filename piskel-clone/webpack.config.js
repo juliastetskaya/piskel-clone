@@ -3,9 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src/app.js'),
+  entry: {
+    app: path.resolve(__dirname, 'src/app.js'),
+    landing: path.resolve(__dirname, 'src/index.js'),
+  },
   output: {
-    filename: 'app.bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
   devtool: 'source-map',
@@ -45,8 +48,15 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Piskel Clone',
+      filename: 'app.html',
+      chunks: ['app'],
     }),
-    new ExtractTextPlugin('app.css'),
+    new HtmlWebpackPlugin({
+      filename: 'landing.html',
+      chunks: ['landing'],
+    }),
+    new ExtractTextPlugin({
+      filename: '[name].css',
+    }),
   ],
 };
