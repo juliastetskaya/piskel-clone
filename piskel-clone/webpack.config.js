@@ -52,7 +52,7 @@ module.exports = {
       chunks: ['app'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'landing.html',
+      filename: 'index.html',
       chunks: ['landing'],
     }),
     new ExtractTextPlugin({

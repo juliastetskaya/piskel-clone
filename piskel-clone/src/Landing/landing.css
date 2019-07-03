@@ -1,3 +1,7 @@
+html {
+  overflow: auto !important;
+}
+
 .description {
   background-color: #525252;
   padding: 40px;
@@ -56,10 +60,6 @@
 
 .main {
   flex-direction: column;
-}
-
-html {
-  overflow: auto;
 }
 
 .tools {
@@ -146,9 +146,31 @@ html {
   color: #ffd700;
   font-size: 20px;
   font-weight: 700;
-  margin-left: 180px;
+  margin-left: 200px;
 }
 
 .example__item {
   margin-right: 30px;
+
+  width: 128px;
+  height: 128px;
+
+  background-repeat: no-repeat;
+}
+
+.example-1 {
+  background-image: url('../images/example-1.gif');
+}
+
+.example-2 {
+  background-image: url('../images/example-2.gif');
+}
+
+.example-3 {
+  background-image: url('../images/example-3.gif');
+}
+
+.examples__list {
+  display: flex;
+  list-style: none;
 }

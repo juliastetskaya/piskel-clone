@@ -38,14 +38,11 @@ export default class Landing {
 
     const text = createElement('p', 'examples__text', 'Examples');
 
-    const images = ['/src/images/example-1.gif', '/src/images/example-2.gif', '/src/images/example-3.gif'].map((item) => {
-      const img = createElement('img', 'example__item');
-      img.src = item;
+    const images = [1, 2, 3].map(item => createElement('li', `example__item example-${item}`));
 
-      return img;
-    });
+    const imagesList = createElement('ul', 'examples__list', ...images);
 
-    const examplesWrapper = createElement('div', 'examples_wrapper', text, ...images);
+    const examplesWrapper = createElement('div', 'examples__wrapper', text, imagesList);
 
     return createElement('section', 'tools', toolsWrapper, examplesWrapper);
   }
