@@ -6,7 +6,14 @@ export default class AnimationView {
     canvas.width = 200;
     canvas.height = 200;
 
-    return createElement('div', 'animation__wrapper', canvas);
+    const buttonFS = createElement('button', 'animation__fullscreen');
+    buttonFS.setAttribute('type', 'button');
+    buttonFS.addEventListener('click', () => {
+      const animation = document.querySelector('.animation__field');
+      animation.requestFullscreen();
+    });
+
+    return createElement('div', 'animation__wrapper', canvas, buttonFS);
   }
 
   createSpeedPanel() {

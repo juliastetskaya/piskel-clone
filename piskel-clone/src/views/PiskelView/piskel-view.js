@@ -37,6 +37,9 @@ export default class PiskelView {
     platform.setAttribute('async', '');
     platform.setAttribute('defer', '');
 
+    const apiJS = createElement('script');
+    apiJS.setAttribute('src', 'https://apis.google.com/js/api.js');
+
     const clientID = createElement('meta');
     clientID.setAttribute('name', 'google-signin-client_id');
     clientID.setAttribute('content', '650755710272-0c48fmokj47v815den93354ud4mfj4om.apps.googleusercontent.com');
@@ -45,7 +48,7 @@ export default class PiskelView {
     singIn.setAttribute('data-onsuccess', 'onSignIn');
     document.querySelector('.main-nav').append(singIn);
 
-    return [platform, clientID];
+    return [platform, clientID, apiJS];
   }
 
   render() {
