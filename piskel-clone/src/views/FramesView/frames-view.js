@@ -39,8 +39,8 @@ export default class FramesView {
     const buttons = this.createFrameButtons();
 
     const frameCanvas = createElement('canvas', 'frame__canvas');
-    frameCanvas.width = 96;
-    frameCanvas.height = 96;
+    frameCanvas.width = 128;
+    frameCanvas.height = 128;
 
     const activeFrame = document.querySelector('.frame--active');
     if (activeFrame) {
