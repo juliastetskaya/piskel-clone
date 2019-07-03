@@ -53,7 +53,8 @@
 
 .resize-button,
 .save-button,
-.button-gif {
+.button-gif,
+.button-apng {
   padding: 5px;
   margin-right: 10px;
 
@@ -68,7 +69,8 @@
 
 .resize-button:hover,
 .save-button:hover,
-.button-gif:hover {
+.button-gif:hover,
+.button-apng:hover {
   border-color: #ffd700;
 }
 
@@ -95,10 +97,14 @@
   flex-direction: column;
 }
 
-.button-gif {
-  display: none;
+.buttons__wrapper {
+  justify-content: center;
 
-  margin: 0 auto;
+  display: none;
+}
+
+.button-gif,
+.button-apng {
   width: 45px;
   text-align: center;
   text-decoration: none;

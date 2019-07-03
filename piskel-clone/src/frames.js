@@ -1,4 +1,5 @@
 import GIF from 'gif.js.optimized';
+import UPNG from 'upng-js';
 import FramesView from './views/FramesView';
 
 export default class Frames {
@@ -151,7 +152,7 @@ export default class Frames {
       const frames = document.querySelectorAll('.frame__canvas');
       const speed = document.querySelector('.speed__range');
       const buttonGif = document.querySelector('.button-gif');
-      console.log(frames);
+      const buttonWrapper = document.querySelector('.buttons__wrapper');
       const gif = new GIF({
         workers: 2,
         quality: 10,
@@ -162,21 +163,41 @@ export default class Frames {
         background: frames[0].style.background,
       });
 
-      frames.forEach(frame => gif.addFrame(frame, { delay: speed.value }));
+      frames.forEach(frame => gif.addFrame(frame, { delay: 1000 / speed.value }));
 
       gif.on('finished', (blob) => {
-        buttonGif.style.display = 'block';
+        buttonWrapper.style.display = 'flex';
         buttonGif.href = URL.createObjectURL(blob);
       });
 
       gif.render();
 
-      buttonGif.addEventListener('click', () => {
-        buttonGif.style.display = 'none';
+      buttonWrapper.addEventListener('click', () => {
+        buttonWrapper.style.display = 'none';
       });
     };
 
+    const exportAPNG = () => {
+      const frames = [...document.querySelectorAll('.frame__canvas')];
+      const speed = document.querySelector('.speed__range');
+      const buttonAPNG = document.querySelector('.button-apng');
+      const arr = frames.map((frame) => {
+        const ctx = frame.getContext('2d');
+        const image = ctx.getImageData(0, 0, frame.width, frame.height);
+        return image.data.buffer;
+      });
+
+      const { width, height } = frames[0];
+      const l = arr.length;
+
+      const data = UPNG.encode(arr, width, height, 0, new Array(l).fill(1000 / speed.value));
+      const blob = new Blob([data], { type: 'image/apng' });
+
+      buttonAPNG.href = URL.createObjectURL(blob);
+    };
+
     document.querySelector('.save-button').addEventListener('click', exportGIF);
+    document.querySelector('.save-button').addEventListener('click', exportAPNG);
   }
 
   static getFrame() {

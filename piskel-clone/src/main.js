@@ -79,7 +79,7 @@ export default class Tools {
     const penSizeList = document.querySelector('.pen-size__list');
     penSizeList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
-      this.pixelWidth = (this.canvas.width / 32) * Number(target.dataset.size);
+      this.pixelWidth = Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
   }
@@ -88,11 +88,51 @@ export default class Tools {
     let isMouseDown = false;
     let colorFirst;
     let colorSecond;
+    let x1;
+    let y1;
+    let x2;
+    let y2;
+
+    const lineDithering = (color1, color2) => {
+      const deltaX = Math.abs(x2 - x1);
+      const deltaY = Math.abs(y2 - y1);
+
+      const signX = x1 < x2 ? 1 : -1;
+      const signY = y1 < y2 ? 1 : -1;
+
+      let error = deltaX - deltaY;
+      if ((x2 + y2) % 2 === 0) {
+        this.drawPixel(x2, y2, color1);
+      } else {
+        this.drawPixel(x2, y2, color2);
+      }
+
+      while (x1 !== x2 || y1 !== y2) {
+        if ((x1 + y1) % 2 === 0) {
+          this.drawPixel(x1, y1, color1);
+        } else {
+          this.drawPixel(x1, y1, color2);
+        }
+        const error2 = error;
+
+        if (error2 > -deltaY) {
+          error -= deltaY;
+          x1 += signX;
+        }
+
+        if (error2 < deltaX) {
+          error += deltaX;
+          y1 += signY;
+        }
+      }
+    };
 
     const mouseDownHandler = (event) => {
       isMouseDown = true;
+      [x1, y1] = [event.offsetX, event.offsetY];
       colorFirst = event.which === 1 ? this.firstColor : this.secondColor;
       colorSecond = event.which === 1 ? this.secondColor : this.firstColor;
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     const mouseMoveHandler = (event) => {
@@ -104,13 +144,9 @@ export default class Tools {
         return;
       }
 
-      const [x, y] = [event.offsetX, event.offsetY];
+      [x2, y2] = [event.offsetX, event.offsetY];
 
-      if ((x + y) % 2 === 0) {
-        this.drawPixel(x, y, colorFirst);
-      } else {
-        this.drawPixel(x, y, colorSecond);
-      }
+      lineDithering(colorFirst, colorSecond);
     };
 
     const mouseUpHandler = () => {
@@ -138,7 +174,6 @@ export default class Tools {
     let y1;
     let mouseDown = false;
 
-
     const light = (x, y, image) => {
       const color = image.data;
       color[0] = color[0] < 255 ? color[0] + 10 : color[0];
@@ -146,7 +181,6 @@ export default class Tools {
       color[2] = color[2] < 255 ? color[2] + 10 : color[2];
       this.context.putImageData(image, x, y);
     };
-
 
     const mouseDownHandler = (event) => {
       mouseDown = true;
@@ -345,6 +379,8 @@ export default class Tools {
   }
 
   bucket() {
+    let mouseDown = false;
+
     const isMatchStartColor = (x, y, color) => {
       const { data } = this.context.getImageData(x, y, 1, 1);
 
@@ -405,6 +441,7 @@ export default class Tools {
 
 
     const mouseDownHandler = (event) => {
+      mouseDown = true;
       const [x1, y1] = [event.offsetX, event.offsetY];
       const { data } = this.context.getImageData(x1, y1, 1, 1);
       fill(x1, y1, data, event.which === 1 ? this.firstColor : this.secondColor);
@@ -418,6 +455,9 @@ export default class Tools {
     };
 
     const mouseUpHandler = () => {
+      if (mouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
       this.transferImage();
       Frames.getFrame();
     };
@@ -596,14 +636,17 @@ export default class Tools {
         if (delta < 0 && gap <= 0) {
           x0 += 1;
           delta += 2 * x0 + 1;
-        } else if (delta > 0 && gap > 0) {
-          y0 -= 1;
-          delta -= 2 * y0 + 1;
-        } else {
-          x0 += 1;
-          delta += 2 * (x0 - y0);
-          y0 -= 1;
+          continue;
         }
+        gap = 2 * (delta - x0) - 1;
+        if (delta > 0 && gap > 0) {
+          y0 -= 1;
+          delta += 1 - 2 * y0;
+          continue;
+        }
+        x0 += 1;
+        delta += 2 * (x0 - y0);
+        y0 -= 1;
       }
     };
 
@@ -612,6 +655,7 @@ export default class Tools {
       rightKey = true;
 
       [x1, y1] = [event.offsetX, event.offsetY];
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
     const mouseMoveHandler = (event) => {
@@ -640,7 +684,6 @@ export default class Tools {
       if (isMouseDown) Frames.getFrame();
 
       isMouseDown = false;
-      this.ctx.beginPath();
     };
 
     const contextMenuHandler = (event) => {
@@ -653,6 +696,35 @@ export default class Tools {
     ]);
   }
 
+  line(coords, color) {
+    let [startX, startY] = coords;
+    const [,, endX, endY] = coords;
+
+    const deltaX = Math.abs(endX - startX);
+    const deltaY = Math.abs(endY - startY);
+
+    const signX = startX < endX ? 1 : -1;
+    const signY = startY < endY ? 1 : -1;
+
+    let error = deltaX - deltaY;
+    this.drawPixel(endX, endY, color);
+
+    while (startX !== endX || startY !== endY) {
+      this.drawPixel(startX, startY, color);
+      const error2 = error;
+
+      if (error2 > -deltaY) {
+        error -= deltaY;
+        startX += signX;
+      }
+
+      if (error2 < deltaX) {
+        error += deltaX;
+        startY += signY;
+      }
+    }
+  }
+
   drawStroke() {
     let isMouseDown = false;
     let rightKey;
@@ -660,35 +732,6 @@ export default class Tools {
     let x2;
     let y1;
     let y2;
-
-    const line = (coords, color) => {
-      let [startX, startY] = coords;
-      const [,, endX, endY] = coords;
-
-      const deltaX = Math.abs(endX - startX);
-      const deltaY = Math.abs(endY - startY);
-
-      const signX = startX < endX ? 1 : -1;
-      const signY = startY < endY ? 1 : -1;
-
-      let error = deltaX - deltaY;
-      this.drawPixel(endX, endY, color);
-
-      while (startX !== endX || startY !== endY) {
-        this.drawPixel(startX, startY, color);
-        const error2 = error;
-
-        if (error2 > -deltaY) {
-          error -= deltaY;
-          startX += signX;
-        }
-
-        if (error2 < deltaX) {
-          error += deltaX;
-          startY += signY;
-        }
-      }
-    };
 
     const mouseDownHandler = (event) => {
       isMouseDown = true;
@@ -710,7 +753,7 @@ export default class Tools {
       [x2, y2] = [event.offsetX, event.offsetY];
 
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      line([x1, y1, x2, y2], rightKey ? this.firstColor : this.secondColor);
+      this.line([x1, y1, x2, y2], rightKey ? this.firstColor : this.secondColor);
     };
 
     const mouseUpHandler = () => {
@@ -764,9 +807,11 @@ export default class Tools {
       [x2, y2] = [event.offsetX, event.offsetY];
 
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.strokeStyle = rightKey ? this.firstColor : this.secondColor;
-      this.ctx.lineWidth = this.pixelWidth;
-      this.ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+      const color = rightKey ? this.firstColor : this.secondColor;
+      this.line([x1, y1, x2, y1], color);
+      this.line([x1, y1, x1, y2], color);
+      this.line([x1, y2, x2, y2], color);
+      this.line([x2, y1, x2, y2], color);
     };
 
     const mouseUpHandler = () => {

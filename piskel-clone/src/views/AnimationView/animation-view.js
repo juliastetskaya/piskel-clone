@@ -37,12 +37,16 @@ export default class AnimationView {
 
   createDownloaders() {
     const buttonSave = createElement('button', 'save-button', 'Download');
+
     const buttonGif = createElement('a', 'button-gif', 'GIF');
     buttonGif.setAttribute('download', 'piskel');
 
-    const wrapper = createElement('div', 'downloaders__wrapper', buttonSave, buttonGif);
+    const buttonAPNG = createElement('a', 'button-apng', 'APNG');
+    buttonAPNG.setAttribute('download', 'piskel');
 
-    return wrapper;
+    const buttonsWrapper = createElement('div', 'buttons__wrapper', buttonGif, buttonAPNG);
+
+    return createElement('div', 'downloaders__wrapper', buttonSave, buttonsWrapper);
   }
 
   render() {
