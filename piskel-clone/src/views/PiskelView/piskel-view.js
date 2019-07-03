@@ -1,4 +1,4 @@
-import createElement from '../../lib';
+import { createElement } from '../../lib';
 import image from '../../images/piskel_logo.png';
 
 export default class PiskelView {

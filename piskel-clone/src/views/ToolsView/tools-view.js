@@ -1,4 +1,4 @@
-import createElement from '../../lib';
+import { createElement } from '../../lib';
 
 export default class ToolsView {
   constructor() {

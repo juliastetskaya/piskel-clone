@@ -1,5 +1,5 @@
 import Render from './views/render';
-import Tools from './main';
+import App from './main';
 import Frames from './frames';
 import Hotkeys from './hotkeys';
 import GoogleAuth from '../auth/googleAuth';
@@ -7,8 +7,8 @@ import GoogleAuth from '../auth/googleAuth';
 const render = new Render();
 render.start();
 
-const tools = new Tools();
-tools.start();
+const app = new App();
+app.start();
 
 const frames = new Frames();
 frames.start();
