@@ -50,10 +50,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'app.html',
       chunks: ['app'],
+      title: 'Piskel Clone',
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       chunks: ['landing'],
+      title: 'Piskel Clone',
     }),
     new ExtractTextPlugin({
       filename: '[name].css',
