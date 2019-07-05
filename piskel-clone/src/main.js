@@ -21,7 +21,7 @@ export default class App {
     this.ctx = this.canvas.getContext('2d');
     this.context = this.mainCanvas.getContext('2d');
     this.currentTool = 'pen';
-    this.pixelWidth = 1;
+    this.pixelSize = 1;
     this.scale = 20;
     this.toolsList = document.querySelector('.tools__list');
     this.tools = {
@@ -92,7 +92,7 @@ export default class App {
     const penSizeList = document.querySelector('.pen-size__list');
     penSizeList.addEventListener('click', ({ target }) => {
       if (target.tagName !== 'LI') return;
-      this.pixelWidth = Number(target.dataset.size);
+      this.pixelSize = Number(target.dataset.size);
       ToolsView.addClassActiveSize(target);
     });
   }
@@ -169,16 +169,27 @@ export default class App {
     this.listners = {};
   }
 
-  drawPixel(x, y, color, mouseDown = true) {
-    this.ctx.fillStyle = color;
-    if (this.currentTool === 'eraser' && mouseDown) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.context.clearRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
-        Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
-    } else {
-      this.ctx.fillRect(Math.floor(x / this.pixelWidth) * this.pixelWidth,
-        Math.floor(y / this.pixelWidth) * this.pixelWidth, this.pixelWidth, this.pixelWidth);
-    }
+  drawPixel(x, y, color, mouseDown = true, secondColor) {
+    const chooseColor = (x0, y0) => ((x0 + y0) % 2 === 0 ? color : secondColor);
+    const points = {
+      1: [[0, 0]],
+      2: [[-1, -1], [0, -1], [-1, 0], [0, 0]],
+      3: [[-1, -1], [0, -1], [-1, 0], [0, 0], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1]],
+      4: [[-1, -1], [0, -1], [-1, 0], [0, 0], [1, -1], [1, 0], [1, 1], [0, 1],
+        [-1, 1], [-2, 1], [-2, 0], [-2, -1], [-2, -2], [-1, -2], [0, -2], [1, -2]],
+    };
+
+    points[this.pixelSize].forEach((delta) => {
+      const [deltaX, deltaY] = delta;
+      const [x1, y1] = [x + deltaX, y + deltaY];
+      if (this.currentTool === 'eraser' && mouseDown) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.clearRect(x1, y1, 1, 1);
+      } else {
+        this.ctx.fillStyle = this.currentTool === 'dithering' ? chooseColor(x1, y1) : color;
+        this.ctx.fillRect(x1, y1, 1, 1);
+      }
+    });
   }
 
   transferImage() {

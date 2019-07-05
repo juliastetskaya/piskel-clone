@@ -17,18 +17,10 @@ export default function () {
     const signY = y1 < y2 ? 1 : -1;
 
     let error = deltaX - deltaY;
-    if ((x2 + y2) % 2 === 0) {
-      this.drawPixel(x2, y2, color1);
-    } else {
-      this.drawPixel(x2, y2, color2);
-    }
+    this.drawPixel(x2, y2, color1, true, color2);
 
     while (x1 !== x2 || y1 !== y2) {
-      if ((x1 + y1) % 2 === 0) {
-        this.drawPixel(x1, y1, color1);
-      } else {
-        this.drawPixel(x1, y1, color2);
-      }
+      this.drawPixel(x1, y1, color1, true, color2);
       const error2 = error;
 
       if (error2 > -deltaY) {
@@ -48,7 +40,7 @@ export default function () {
     [x1, y1] = [event.offsetX, event.offsetY];
     colorFirst = event.which === 1 ? this.firstColor : this.secondColor;
     colorSecond = event.which === 1 ? this.secondColor : this.firstColor;
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawPixel(x1, y1, colorFirst, true, colorSecond);
   };
 
   const mouseMoveHandler = (event) => {

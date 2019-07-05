@@ -56,7 +56,7 @@ export default function () {
 
     [x2, y2] = [event.offsetX, event.offsetY];
 
-    const radius = Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2));
+    const radius = Math.ceil(Math.sqrt(((x2 - x1) ** 2) + ((y2 - y1) ** 2)));
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     circle(x1, y1, radius, rightKey ? this.firstColor : this.secondColor);

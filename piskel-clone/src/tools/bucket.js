@@ -28,18 +28,18 @@ export default function () {
       let [, y] = newPos;
 
       while (y >= 0 && isMatchStartColor(x, y, startColor)) {
-        y -= this.pixelWidth;
+        y -= 1;
       }
 
-      y += this.pixelWidth;
+      y += 1;
 
       while (y < canvasHeight && isMatchStartColor(x, y, startColor)) {
         this.drawPixel(x, y, fillColor);
 
         if (x > 0) {
-          if (isMatchStartColor(x - this.pixelWidth, y, startColor)) {
+          if (isMatchStartColor(x - 1, y, startColor)) {
             if (!reachLeft) {
-              pixelStack.push([x - this.pixelWidth, y]);
+              pixelStack.push([x - 1, y]);
               reachLeft = true;
             }
           }
@@ -47,16 +47,16 @@ export default function () {
         }
 
         if (x < canvasWidth) {
-          if (isMatchStartColor(x + this.pixelWidth, y, startColor)) {
+          if (isMatchStartColor(x + 1, y, startColor)) {
             if (!reachRight) {
-              pixelStack.push([x + this.pixelWidth, y]);
+              pixelStack.push([x + 1, y]);
               reachRight = true;
             }
           }
           reachRight = false;
         }
 
-        y += this.pixelWidth;
+        y += 1;
       }
       this.transferImage();
     }
