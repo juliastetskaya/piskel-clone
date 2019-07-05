@@ -91,7 +91,7 @@ export default class Frames {
 
     const e = event;
     e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', window.getComputedStyle(target).order);
+    e.dataTransfer.setData('text/html', target);
   }
 
   dragOverHandle(event) {
@@ -128,8 +128,9 @@ export default class Frames {
     const element = target.closest('.frames__item');
 
     if (this.dragSrcEl !== element) {
+      const temp = this.dragSrcEl.style.order;
       this.dragSrcEl.style.order = element.style.order;
-      element.style.order = event.dataTransfer.getData('text/html').slice(66);
+      element.style.order = temp;
     }
 
     return false;
