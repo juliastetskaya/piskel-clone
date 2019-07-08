@@ -11,7 +11,7 @@ export default class PiskelView {
     logo.setAttribute('src', image);
 
     const logoLink = createElement('a', 'logo__link', logo);
-    logoLink.setAttribute('href', '/');
+    logoLink.setAttribute('href', '/piskel-clone/');
 
     return logoLink;
   }
