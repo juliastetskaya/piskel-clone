@@ -1,0 +1,257 @@
+.frames {
+  height: calc(100vh - 50px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 50px;
+  padding-bottom: 10px;
+  margin-right: 5px;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: #666666;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(50, 50, 50, 0.4);
+}
+
+.frames__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  margin-right: 22px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.frames__item {
+  position: relative;
+
+  margin-bottom: 5px;
+  border: 3px solid #444444;
+  border-radius: 3px;
+
+  width: 134px;
+  height: 134px;
+}
+
+.frame__canvas {
+  background: url('../../images/bg.png') repeat;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+.button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+
+  background-color: rgba(100, 100, 100, 0.6);;
+  border: none;
+  outline: none;
+
+  display: none;
+  font-family: inherit;
+}
+
+.button__delete,
+.button__copy,
+.button__move {
+  background-image: url('../../images/icons.png');
+  background-repeat: no-repeat;
+  background-size: 320px 274px;
+}
+
+.button__delete {
+  top: 0;
+  right: 0;
+  border-bottom-left-radius: 3px;
+  background-position: -274px -106px;
+  cursor: pointer;
+}
+
+.button__copy {
+  bottom: 0;
+  right: 0;
+  border-top-left-radius: 3px;
+  background-position: -274px -76px;
+  cursor: pointer;
+}
+
+.button__move {
+  bottom: 0;
+  left: 0;
+  border-top-right-radius: 3px;
+  background-position: -274px -46px;
+  cursor: move;
+  font-size: 0;
+}
+
+.button__number {
+  top: 0;
+  left: 0;
+
+  font-size: 14px;
+  line-height: 15px;
+  padding-top: 5px;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  border-bottom-right-radius: 3px;
+}
+
+.frames__item:hover {
+  border-color: #999999;
+}
+
+.frames__item:hover .button {
+  display: block;
+}
+
+.frame--active {
+  border-color: #ffd700;
+}
+
+.button__number {
+  background-color: #ffd700;
+}
+
+.button__tip {
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.1;
+
+  background-color: #000000;
+
+  display: none;
+  position: absolute;
+
+  left: 40px;
+  top: 3px;
+  z-index: 7;
+
+  padding: 7px;
+  white-space: nowrap;
+  border-radius: 3px;
+}
+
+.button:hover > .button__tip {
+  display: inline-block;
+}
+
+.button__tip::before {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6.5px 7px 6.5px 0;
+  border-color: transparent #000000 transparent transparent;
+
+  top: 7px;
+  left: -5px;
+}
+
+.button__number > .button__tip {
+  left: -35px;
+  top: -35px;
+}
+
+.button__number > .button__tip::before {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 6.5px 0 6.5px;
+  border-color: #000000 transparent transparent transparent;
+
+  top: 25px;
+  left: 43px;
+}
+
+.frame--active::after {
+  content: '';
+  position: absolute;
+
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 6px;
+  border-color: transparent transparent transparent #ffd700;
+
+  top: 58px;
+  right: -9px;
+}
+
+.frame--active:hover {
+  border-color: #ffd700;
+}
+
+.frames__button {
+  padding: 8px 3px 8px 50px;
+  overflow: hidden;
+  width: 134px;
+  height: 50px;
+  border: #888888 solid 3px;
+  border-radius: 4px;
+  color: #888888;
+  background-color: #222222;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  margin-top: 3px;
+  line-height: 1.1;
+  font-family: inherit;
+  outline: none;
+}
+
+.frames__button:hover {
+  border-color: #ffd700;
+}
+
+.button__wrapper {
+  position: relative;
+}
+
+.button__icon {
+  width: 26px;
+  height: 26px;
+
+  background-image: url('../../images/icons.png');
+  background-repeat: no-repeat;
+  background-size: 320px 274px;
+  background-position: -274px -157px;
+
+  position: absolute;
+  top: 15px;
+  left: 20px;
+}
+
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.over {
+  border-style: dashed;
+  border-color: #ffd700;
+}

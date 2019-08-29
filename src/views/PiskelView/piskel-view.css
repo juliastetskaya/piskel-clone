@@ -1,0 +1,129 @@
+html {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+body {
+  min-width: 1300px;
+  margin: 0;
+  padding: 0;
+
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgb(0, 0, 0);
+  background-color: #1d1d1d;
+
+  user-select: none;
+}
+
+.main {
+  display: flex;
+  margin-top: 9px;
+}
+
+
+.main-header {
+  height: 36px;
+  background-color: #2d2d2d;
+
+  padding: 6px 6px 0 15px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 24px;
+}
+
+.piskel-name {
+  color: #888888;
+
+  font-size: 22px;
+  text-shadow: 0 -1px 0 #000000;
+}
+
+.main-nav {
+  display: flex;
+  position: relative;
+}
+
+.button__nav {
+  display: block;
+  padding: 6px 10px;
+  height: 24px;
+
+  background-color: #ffd700;
+  border-radius: 2px;
+
+  font-size: 13px;
+  line-height: 12px;
+  font-weight: 700;
+  color: #000000;
+  text-decoration: none;
+}
+
+.create-sprite {
+  margin-right: 6px;
+}
+
+.g-signin2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.g-signin2 > div {
+  background-color: transparent;
+  color: transparent;
+  width: 63px !important;
+  height: 24px !important;
+  box-shadow: none;
+}
+
+.g-signin2 > div:hover {
+  box-shadow: none;
+}
+
+.g-signin2 > div:active {
+  background-color: transparent;
+  color: transparent;
+  outline: none;
+}
+
+.g-signin2 > div > div > div {
+  display: none;
+}
+
+.login {
+  display: none;
+  align-items: center;
+  margin: 0;
+  padding: 0 8px;
+  margin-right: 5px;
+
+  cursor: pointer;
+}
+
+.img-login {
+  width: 20px;
+  height: 20px;
+
+  margin-right: 5px;
+}
+
+.logout {
+  display: none;
+  cursor: pointer;
+}

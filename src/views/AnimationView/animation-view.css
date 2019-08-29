@@ -1,0 +1,132 @@
+.animation {
+  margin-right: 57px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.animation__wrapper {
+  height: 200px;
+
+  position: relative;
+}
+
+.animation__field {
+  background: url('../../images/bg.png') repeat;
+  image-rendering: pixelated;
+}
+
+.speed__wrapper {
+  background-color: #333333;
+
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.speed__fps {
+  color: #aaa;
+  font-size: 12px;
+  min-width: 55px;
+  line-height: 26px;
+
+  display: block;
+  padding: 0 10px;
+}
+
+.speed__range {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.size-field {
+  margin: 0 auto;
+
+  margin-bottom: 30px;
+}
+
+.size-field__text {
+  padding: 0;
+  margin: 0;
+  color: #ffd700;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.resize-button,
+.save-button,
+.button-gif,
+.button-apng {
+  padding: 5px;
+  margin-right: 10px;
+
+  border: 3px solid #aaaaaa;
+  border-radius: 4px;
+  outline: none;
+
+  background-color: #222222;
+  color: #aaaaaa;
+  font-size: 12px;
+}
+
+.resize-button:hover,
+.save-button:hover,
+.button-gif:hover,
+.button-apng:hover {
+  border-color: #ffd700;
+}
+
+.resize-button:last-child {
+  margin-right: 0;
+}
+
+.resize-button--active {
+  border-color: #ffd700;
+  color: #ffd700;
+}
+
+.save-button {
+  text-transform: uppercase;
+  color: #ffd700;
+  margin: 0 auto;
+  width: 180px;
+
+  margin-bottom: 10px;
+}
+
+.downloaders__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons__wrapper {
+  justify-content: center;
+
+  display: none;
+}
+
+.button-gif,
+.button-apng {
+  width: 45px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.animation__fullscreen {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  outline: none;
+
+  background-color: transparent;
+
+  background-image: url('../../images/icons.png');
+  background-size: 280px 234px;
+  background-repeat: no-repeat;
+  background-position: -122px -156px;
+}
